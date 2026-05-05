@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<meta name="theme-color" content="#0D0515"/>
+<title>CampusVibe — Your Campus. Your People. Your Vibe.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DESIGN TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root{
+  --neon:#B026FF;--neon2:#00FFD1;--neon3:#FF2DAF;--gold:#FFB800;--red:#FF3B30;--green:#00C853;
+  --bg:#0D0515;--card:#130A1E;--card2:#1A0E2E;--card3:#201240;
+  --border:#2A1245;--border2:#3D1A6E;
+  --text:#F0E6FF;--text2:#C4B0E0;--muted:#7A6A9A;--muted2:#4A3A6A;
+  --fhead:'Syne',system-ui,sans-serif;
+  --fbody:'DM Sans',system-ui,sans-serif;
+  --fmono:'Space Mono',monospace;
+  --nav:230px;--rside:270px;--topbar:62px;
+  --r:14px;--rl:20px;--rxl:26px;
+}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESET
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--text);font-family:var(--fbody);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input,textarea,select{font-family:inherit;}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KEYFRAMES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0;pointer-events:none}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes popIn{0%{opacity:0;transform:scale(.5) rotate(-6deg)}70%{transform:scale(1.1) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spinRev{to{transform:rotate(-360deg)}}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-50px) scale(1.08)}}
+@keyframes waveBar{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes floatUp{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-90px);opacity:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes heartPop{0%{transform:scale(1)}35%{transform:scale(1.5)}70%{transform:scale(.85)}100%{transform:scale(1)}}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes neonRing{0%,100%{box-shadow:0 0 16px var(--neon),0 0 32px rgba(176,38,255,.3)}50%{box-shadow:0 0 32px var(--neon),0 0 64px rgba(176,38,255,.5)}}
+@keyframes scanLine{0%{top:-2px}100%{top:100%}}
+@keyframes comboSlide{0%{opacity:0;transform:translateX(30px)}100%{opacity:1;transform:translateX(0)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GLOBAL BACKGROUND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.11;animation:orbFloat 14s ease-in-out infinite;}
+.o1{width:700px;height:700px;background:var(--neon);top:-200px;left:-150px;}
+.o2{width:600px;height:600px;background:var(--neon3);bottom:-200px;right:-150px;animation-delay:5s;}
+.o3{width:400px;height:400px;background:var(--neon2);top:35%;left:40%;animation-delay:2.5s;}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(42,18,69,.5) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(42,18,69,.5) 1px,transparent 1px);
+  background-size:46px 46px;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LOADER — full screen, always on top
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#loader{
+  position:fixed;inset:0;z-index:10000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:var(--bg);overflow:hidden;
+  transition:opacity .8s ease,transform .8s ease;
+}
+#loader.out{opacity:0;transform:scale(1.06);pointer-events:none;}
+
+.l-bg{position:absolute;inset:0;overflow:hidden;}
+.l-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.22;}
+.lo1{width:600px;height:600px;background:var(--neon);top:-120px;left:-100px;animation:orbFloat 10s ease-in-out infinite;}
+.lo2{width:500px;height:500px;background:var(--neon3);bottom:-120px;right:-80px;animation:orbFloat 10s ease-in-out 3.5s infinite;}
+.lo3{width:360px;height:360px;background:var(--neon2);top:32%;left:34%;animation:orbFloat 8s ease-in-out 1.8s infinite;}
+.l-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(176,38,255,.07) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(176,38,255,.07) 1px,transparent 1px);
+  background-size:42px 42px;}
+.l-scan{position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--neon),transparent);
+  opacity:.3;animation:scanLine 3s linear infinite;}
+
+.l-content{position:relative;z-index:1;text-align:center;padding:0 24px;width:100%;max-width:420px;}
+
+/* Crest */
+.l-crest{width:128px;height:128px;position:relative;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;}
+.l-ring1{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(176,38,255,.3);animation:spin 22s linear infinite;}
+.l-ring2{position:absolute;inset:8px;border-radius:50%;border:1px dashed rgba(176,38,255,.18);animation:spinRev 14s linear infinite;}
+.l-orbit{position:absolute;inset:-6px;border-radius:50%;animation:spin 3.8s linear infinite;}
+.l-od{position:absolute;top:3px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:var(--neon);box-shadow:0 0 12px var(--neon),0 0 24px rgba(176,38,255,.5);}
+.l-orbit2{position:absolute;inset:-16px;border-radius:50%;animation:spinRev 7s linear infinite;}
+.l-od2{position:absolute;top:5px;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:var(--neon3);box-shadow:0 0 8px var(--neon3);}
+.l-orbit3{position:absolute;inset:-26px;border-radius:50%;animation:spin 12s linear infinite;}
+.l-od3{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--neon2);box-shadow:0 0 6px var(--neon2);}
+.l-core{width:90px;height:90px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(176,38,255,.25),rgba(255,45,175,.18));
+  border:1.5px solid rgba(176,38,255,.5);
+  display:flex;align-items:center;justify-content:center;font-size:38px;
+  animation:neonRing 3s ease-in-out infinite;
+  box-shadow:0 0 40px rgba(176,38,255,.2);}
+
+.l-logo{
+  font-family:var(--fhead);font-size:52px;font-weight:900;letter-spacing:-1.5px;
+  background:linear-gradient(135deg,var(--neon),var(--neon3),var(--neon2));
+  background-size:200% 200%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:fadeUp .6s ease .15s both,gradShift 4s ease infinite;
+  margin-bottom:4px;
+}
+.l-tag{
+  font-family:var(--fmono);font-size:10px;font-weight:700;color:var(--muted);
+  letter-spacing:2.5px;text-transform:uppercase;margin-bottom:26px;
+  animation:fadeUp .5s ease .3s both;
+}
+
+/* Wave bars */
+.l-waves{display:flex;align-items:flex-end;gap:3px;height:28px;justify-content:center;margin-bottom:22px;animation:fadeUp .5s ease .4s both;}
+.l-wb{width:4px;border-radius:3px;background:linear-gradient(180deg,var(--neon),var(--neon3));animation:waveBar .9s ease-in-out infinite;}
+.lb1{height:10px;animation-delay:0s}.lb2{height:20px;animation-delay:.1s}.lb3{height:28px;animation-delay:.2s}
+.lb4{height:14px;animation-delay:.3s}.lb5{height:24px;animation-delay:.15s}.lb6{height:11px;animation-delay:.25s}.lb7{height:22px;animation-delay:.05s}
+
+/* Fact box */
+.l-fact-wrap{min-height:60px;margin-bottom:24px;animation:fadeUp .5s ease .5s both;}
+.l-fact{
+  border-left:3px solid var(--neon);padding-left:14px;text-align:left;
+  max-width:360px;margin:0 auto;
+}
+.l-fact-lbl{font-family:var(--fmono);font-size:9px;font-weight:700;color:var(--neon);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.l-fact-txt{font-size:13.5px;color:var(--text2);line-height:1.65;transition:opacity .3s,transform .3s;}
+.l-cursor{display:inline-block;width:2px;height:13px;background:var(--neon);vertical-align:middle;margin-left:2px;animation:pulse .7s ease-in-out infinite;}
+
+/* Progress */
+.l-prog-wrap{width:300px;margin:0 auto 14px;animation:fadeUp .5s ease .6s both;}
+.l-prog-track{height:3px;background:rgba(176,38,255,.15);border-radius:2px;overflow:hidden;margin-bottom:7px;}
+.l-prog-fill{height:100%;width:0%;border-radius:2px;background:linear-gradient(90deg,var(--neon),var(--neon2));transition:width .4s ease;box-shadow:0 0 12px var(--neon);}
+.l-prog-row{display:flex;justify-content:space-between;font-size:10px;font-family:var(--fmono);color:var(--muted);}
+
+.l-note{font-size:10px;font-family:var(--fmono);color:var(--muted2);animation:pulse 2s ease-in-out infinite;}
+
+/* Emoji particles */
+.l-particle{position:absolute;font-size:18px;pointer-events:none;animation:floatUp 2.8s ease-out forwards;}
+
+/* Ticker */
+.l-ticker{position:absolute;bottom:0;left:0;right:0;border-top:1px solid rgba(176,38,255,.15);background:rgba(176,38,255,.05);padding:8px 0;overflow:hidden;}
+.l-ticker-inner{display:flex;gap:28px;white-space:nowrap;animation:ticker 24s linear infinite;}
+.l-tick{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-family:var(--fmono);font-weight:700;color:var(--muted);letter-spacing:.4px;flex-shrink:0;}
+.l-tick-dot{width:5px;height:5px;border-radius:50%;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   APP SHELL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#app{display:none;position:relative;z-index:1;min-height:100vh;}
+#app.on{display:block;animation:fadeIn .5s ease both;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOP NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:200;height:var(--topbar);
+  background:rgba(13,5,21,.92);backdrop-filter:blur(22px) saturate(1.5);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 16px;gap:12px;
+  transition:box-shadow .3s;
+}
+.topbar.scrolled{box-shadow:0 4px 40px rgba(0,0,0,.7);}
+.t-logo{
+  font-family:var(--fhead);font-size:22px;font-weight:900;cursor:pointer;
+  background:linear-gradient(135deg,var(--neon),var(--neon3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-.5px;flex-shrink:0;white-space:nowrap;
+}
+.t-search{flex:1;max-width:360px;margin:0 auto;position:relative;}
+.t-search input{
+  width:100%;background:var(--card2);border:1px solid var(--border);
+  border-radius:12px;padding:9px 14px 9px 36px;
+  color:var(--text);font-size:13px;outline:none;transition:all .2s;
+}
+.t-search input:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(176,38,255,.12);}
+.t-search input::placeholder{color:var(--muted);}
+.t-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+.t-sdrop{
+  position:absolute;top:calc(100% + 8px);left:0;right:0;
+  background:var(--card2);border:1px solid var(--border);border-radius:var(--r);
+  box-shadow:0 8px 48px rgba(0,0,0,.5);z-index:300;display:none;overflow:hidden;
+  animation:slideDown .2s ease;
+}
+.t-sdrop.on{display:block;}
+.t-sitem{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  cursor:pointer;border-bottom:1px solid var(--border);transition:background .15s;
+}
+.t-sitem:last-child{border-bottom:none;}
+.t-sitem:hover{background:var(--card3);}
+.t-stype{font-size:9px;font-family:var(--fmono);font-weight:700;padding:2px 6px;border-radius:4px;flex-shrink:0;white-space:nowrap;}
+.t-sname{font-size:13px;color:var(--text2);}
+.t-ssub{font-size:10px;color:var(--muted);}
+.t-acts{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;}
+.t-ibtn{
+  width:38px;height:38px;border-radius:10px;background:var(--card2);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;transition:all .2s;position:relative;
+}
+.t-ibtn:hover{border-color:var(--neon);box-shadow:0 0 12px rgba(176,38,255,.2);}
+.t-badge{
+  position:absolute;top:-4px;right:-4px;background:var(--neon3);color:#fff;
+  font-size:9px;font-weight:700;font-family:var(--fmono);
+  min-width:16px;height:16px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);padding:0 3px;
+}
+.t-av{
+  width:38px;height:38px;border-radius:50%;cursor:pointer;
+  background:linear-gradient(135deg,var(--neon),var(--neon3));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fhead);font-size:15px;font-weight:900;color:#fff;
+  border:2px solid transparent;transition:all .2s;
+}
+.t-av:hover{border-color:var(--neon);box-shadow:0 0 16px rgba(176,38,255,.5);}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LAYOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.layout{display:flex;padding-top:var(--topbar);min-height:100vh;max-width:1280px;margin:0 auto;}
+
+/* Left sidebar */
+.lside{
+  width:var(--nav);flex-shrink:0;
+  position:sticky;top:var(--topbar);height:calc(100vh - var(--topbar));
+  overflow-y:auto;padding:16px 10px;border-right:1px solid var(--border);
+}
+.lside::-webkit-scrollbar{width:0;}
+
+.ni{
+  display:flex;align-items:center;gap:11px;padding:10px 12px;
+  border-radius:var(--r);color:var(--muted);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .2s;margin-bottom:2px;
+  border:1px solid transparent;font-family:var(--fhead);
+}
+.ni:hover{background:rgba(176,38,255,.09);color:var(--text2);border-color:rgba(176,38,255,.18);}
+.ni.on{background:rgba(176,38,255,.16);color:var(--text);border-color:rgba(176,38,255,.35);box-shadow:inset 3px 0 0 var(--neon);}
+.ni-ic{font-size:18px;flex-shrink:0;}
+.ni-badge{margin-left:auto;background:var(--neon3);color:#fff;font-size:9px;font-family:var(--fmono);font-weight:700;padding:2px 7px;border-radius:10px;}
+.ns-lbl{font-size:9px;font-family:var(--fmono);font-weight:700;color:var(--muted2);letter-spacing:1.2px;text-transform:uppercase;padding:14px 12px 6px;}
+
+.pf-mini{margin-top:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer;transition:border-color .2s;}
+.pf-mini:hover{border-color:var(--border2);}
+
+/* Feed area */
+.feed{flex:1;min-width:0;padding:18px 14px;max-width:680px;}
+
+/* Right sidebar */
+.rside{
+  width:var(--rside);flex-shrink:0;
+  position:sticky;top:var(--topbar);height:calc(100vh - var(--topbar));
+  overflow-y:auto;padding:16px 10px;
+}
+.rside::-webkit-scrollbar{width:0;}
+
+/* Mobile bottom nav */
+.mobnav{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(19,10,30,.97);backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);
+  padding:6px 0 max(6px,env(safe-area-inset-bottom));
+}
+.mobnav-in{display:flex;justify-content:space-around;}
+.mn-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:5px 10px;cursor:pointer;transition:all .2s;
+}
+.mn-item .ic{font-size:22px;transition:transform .25s cubic-bezier(.175,.885,.32,1.275);}
+.mn-item .lb{font-size:9px;font-family:var(--fmono);color:var(--muted);transition:color .2s;}
+.mn-item.on .ic{transform:scale(1.2);}
+.mn-item.on .lb{color:var(--neon);}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   COMPONENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Card */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;transition:border-color .2s;}
+.card:hover{border-color:var(--border2);}
+
+/* Badges */
+.ubadge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;font-family:var(--fmono);letter-spacing:.3px;flex-shrink:0;}
+.lvbadge{background:rgba(176,38,255,.18);color:var(--neon);border:1px solid rgba(176,38,255,.3);border-radius:5px;padding:2px 7px;font-size:10px;font-weight:700;font-family:var(--fmono);}
+.vbadge{width:16px;height:16px;background:linear-gradient(135deg,var(--neon),var(--neon3));border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:900;flex-shrink:0;}
+.exbadge{display:inline-flex;align-items:center;gap:3px;background:rgba(255,184,0,.14);border:1px solid rgba(255,184,0,.3);border-radius:5px;padding:2px 8px;font-size:9px;font-weight:700;color:var(--gold);font-family:var(--fmono);}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:none;border-radius:var(--r);padding:10px 20px;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;font-family:var(--fmono);}
+.bp{background:linear-gradient(135deg,var(--neon),var(--neon3));color:#fff;box-shadow:0 4px 16px rgba(176,38,255,.35);}
+.bp:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(176,38,255,.52);}
+.bp:active{transform:translateY(0);}
+.bo{background:none;border:1px solid var(--border);color:var(--muted);}
+.bo:hover{border-color:var(--neon);color:var(--neon);}
+.bt{background:rgba(0,255,209,.1);border:1px solid rgba(0,255,209,.25);color:var(--neon2);}
+.bg{background:rgba(255,184,0,.1);border:1px solid rgba(255,184,0,.3);color:var(--gold);}
+.bsm{padding:6px 14px;font-size:11px;border-radius:8px;}
+.bfull{width:100%;}
+
+/* Input */
+.inp{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:11px 15px;color:var(--text);font-size:14px;outline:none;transition:all .2s;}
+.inp:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(176,38,255,.12);}
+.inp::placeholder{color:var(--muted);}
+select.inp option{background:var(--card2);color:var(--text);}
+
+/* Filter tabs */
+.ftabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;}
+.ftabs::-webkit-scrollbar{height:0;}
+.ftab{flex-shrink:0;padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--card2);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;font-family:var(--fmono);white-space:nowrap;}
+.ftab:hover{border-color:var(--border2);color:var(--text2);}
+.ftab.on{background:linear-gradient(135deg,var(--neon),var(--neon3));border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(176,38,255,.35);}
+
+/* Widget */
+.wgt{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:15px;margin-bottom:12px;}
+.wgt-ttl{font-family:var(--fhead);font-size:14px;font-weight:800;margin-bottom:13px;display:flex;align-items:center;gap:8px;}
+.wgt-lnk{font-size:11px;color:var(--neon);font-family:var(--fmono);cursor:pointer;margin-left:auto;}
+
+/* Overlay / Modal */
+.ovl{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.82);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.ovl.on{opacity:1;pointer-events:auto;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:var(--rxl);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;transform:scale(.88) translateY(30px);transition:transform .38s cubic-bezier(.175,.885,.32,1.275);}
+.ovl.on .modal{transform:scale(1) translateY(0);}
+.mhdr{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:1;}
+.mttl{font-family:var(--fhead);font-size:17px;font-weight:800;}
+.mclose{width:30px;height:30px;border-radius:8px;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--muted);transition:all .2s;}
+.mclose:hover{border-color:var(--red);color:var(--red);}
+.mbody{padding:18px 22px;}
+
+/* Toast */
+.toast-wrap{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);z-index:700;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none;width:max-content;max-width:88vw;}
+.toast{background:rgba(26,14,46,.97);border:1px solid var(--border);border-radius:12px;padding:10px 18px;font-size:13px;font-weight:600;font-family:var(--fmono);color:var(--text);backdrop-filter:blur(16px);box-shadow:0 4px 24px rgba(0,0,0,.4);animation:fadeUp .28s ease both;}
+.toast.ok{border-color:rgba(0,200,83,.4);color:var(--green);}
+.toast.err{border-color:rgba(255,59,48,.4);color:var(--red);}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STORIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.stories{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:13px 15px;margin-bottom:13px;overflow-x:auto;}
+.stories::-webkit-scrollbar{height:0;}
+.stories-row{display:flex;gap:13px;align-items:flex-start;}
+.sb{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;flex-shrink:0;transition:transform .2s;}
+.sb:hover{transform:scale(1.06);}
+.sb-ring{width:60px;height:60px;border-radius:50%;padding:2.5px;transition:all .2s;flex-shrink:0;}
+.sb-ring.new{background:linear-gradient(135deg,var(--neon),var(--neon3));box-shadow:0 0 16px rgba(176,38,255,.45);}
+.sb-ring.seen{background:var(--muted2);}
+.sb-inner{width:100%;height:100%;border-radius:50%;border:2.5px solid var(--bg);background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden;}
+.sb-lbl{font-size:10px;font-family:var(--fmono);color:var(--text2);text-align:center;max-width:60px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sb-add{width:60px;height:60px;border-radius:50%;background:var(--card2);border:2px dashed rgba(176,38,255,.4);display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;position:relative;flex-shrink:0;transition:all .2s;}
+.sb-add:hover{border-color:var(--neon);box-shadow:0 0 14px rgba(176,38,255,.3);}
+.sb-plus{position:absolute;bottom:0;right:0;width:19px;height:19px;border-radius:50%;background:var(--neon);border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:900;line-height:1;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   COMPOSE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.compose{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:13px 15px;margin-bottom:13px;transition:border-color .25s,box-shadow .25s;}
+.compose.act{border-color:rgba(176,38,255,.55);box-shadow:0 0 24px rgba(176,38,255,.14);}
+.compose-row{display:flex;gap:11px;align-items:flex-start;}
+.compose-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--neon3));display:flex;align-items:center;justify-content:center;font-family:var(--fhead);font-size:15px;font-weight:900;color:#fff;flex-shrink:0;}
+.compose-ta{flex:1;background:none;border:none;outline:none;resize:none;color:var(--text);font-size:14px;line-height:1.65;font-family:var(--fbody);min-height:44px;}
+.compose-ta::placeholder{color:var(--muted);}
+.compose-tools-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.compose-icons{display:flex;gap:3px;}
+.ctool{width:33px;height:33px;border-radius:8px;border:1px solid transparent;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .15s;}
+.ctool:hover{background:var(--card2);border-color:var(--border);}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   REFRESH PILL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.refresh-row{display:flex;justify-content:center;margin-bottom:10px;min-height:0;overflow:hidden;max-height:0;transition:max-height .4s ease;}
+.refresh-row.on{max-height:50px;}
+.rpill{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--neon),var(--neon3));border:none;border-radius:20px;padding:8px 20px;color:#fff;font-size:11px;font-weight:700;font-family:var(--fmono);cursor:pointer;box-shadow:0 4px 20px rgba(176,38,255,.45);animation:bounce 1.6s ease-in-out infinite;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   POST CARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.pcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:12px;transition:border-color .2s,box-shadow .2s;animation:fadeUp .35s ease both;}
+.pcard:hover{border-color:var(--border2);}
+.pcard.ev{border-color:rgba(176,38,255,.5);box-shadow:0 0 24px rgba(176,38,255,.14);}
+.pcard.an{border-color:rgba(0,255,209,.38);}
+.pcard.ex{border-color:rgba(255,184,0,.42);box-shadow:0 0 18px rgba(255,184,0,.1);}
+
+.ptbar{padding:5px 15px;font-size:10px;font-weight:700;font-family:var(--fmono);letter-spacing:.8px;display:flex;align-items:center;gap:6px;}
+.phdr{padding:13px 15px 0;}
+.pmeta{display:flex;gap:11px;align-items:flex-start;}
+.puinfo{flex:1;min-width:0;}
+.pnrow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.pname{font-weight:700;font-size:14px;font-family:var(--fhead);color:var(--text);}
+.psrow{display:flex;align-items:center;gap:5px;margin-top:2px;flex-wrap:wrap;}
+.phandle{font-size:11px;color:var(--muted);font-family:var(--fmono);}
+.ptime{font-size:11px;color:var(--muted);}
+.phall{font-size:10px;color:var(--muted2);display:flex;align-items:center;gap:3px;margin-top:2px;}
+.pbody{padding:11px 15px;font-size:14px;line-height:1.72;color:var(--text2);}
+.ptags{display:flex;gap:5px;flex-wrap:wrap;padding:0 15px 9px;}
+.ptag{font-size:11px;font-weight:600;color:var(--neon2);cursor:pointer;font-family:var(--fmono);}
+.ptag:hover{color:var(--neon);}
+.pimg{width:100%;max-height:340px;object-fit:cover;display:block;}
+.pimgwrap{position:relative;}
+.p-ev-cta{position:absolute;bottom:12px;right:12px;background:linear-gradient(135deg,var(--neon),var(--neon3));border:none;border-radius:8px;padding:7px 15px;color:#fff;font-weight:700;font-size:12px;cursor:pointer;font-family:var(--fmono);box-shadow:0 4px 18px rgba(176,38,255,.55);transition:transform .2s;}
+.p-ev-cta:hover{transform:scale(1.05);}
+
+/* Post actions */
+.pacts{padding:9px 12px 11px;display:flex;gap:2px;border-top:1px solid var(--border);}
+.ab{display:flex;align-items:center;gap:4px;padding:7px 8px;border-radius:8px;border:1px solid transparent;background:none;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;font-family:var(--fmono);flex:1;justify-content:center;}
+.ab:hover{background:var(--card2);color:var(--text2);}
+.ab.lk{color:var(--neon3);border-color:rgba(255,45,175,.28);background:rgba(255,45,175,.09);}
+.ab.rp{color:var(--neon2);border-color:rgba(0,255,209,.28);background:rgba(0,255,209,.09);}
+.ab.cm{color:var(--neon);border-color:rgba(176,38,255,.28);background:rgba(176,38,255,.09);}
+
+/* Comments */
+.czone{border-top:1px solid var(--border);background:var(--card2);overflow:hidden;max-height:0;transition:max-height .4s cubic-bezier(.4,0,.2,1);}
+.czone.on{max-height:520px;}
+.ccompose{padding:11px 13px;display:flex;gap:9px;align-items:flex-start;}
+.cinwrap{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;padding:0 11px;gap:7px;transition:border-color .2s;}
+.cinwrap:focus-within{border-color:var(--neon);}
+.cin{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:13px;padding:9px 0;font-family:var(--fbody);}
+.cin::placeholder{color:var(--muted);}
+.csend{background:var(--neon);border:none;border-radius:6px;color:#fff;padding:4px 11px;font-size:11px;font-weight:700;font-family:var(--fmono);cursor:pointer;transition:background .2s;}
+.csend:hover{background:var(--neon3);}
+.clist{padding:0 13px 11px;}
+.citem{display:flex;gap:8px;margin-bottom:9px;animation:fadeUp .22s ease both;}
+.cbbl{flex:1;background:var(--card);border-radius:10px;padding:9px 11px;border:1px solid var(--border);}
+.cauth{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;font-family:var(--fhead);}
+.ctxt{font-size:13px;color:var(--text2);line-height:1.5;}
+.cacts{display:flex;gap:10px;margin-top:5px;}
+.cact{font-size:10px;color:var(--muted);cursor:pointer;font-family:var(--fmono);transition:color .15s;}
+.cact:hover{color:var(--neon);}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RIGHT SIDEBAR BITS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.titem{padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:padding-left .18s;}
+.titem:hover{padding-left:5px;}
+.titem:last-child{border-bottom:none;}
+.ttag{font-size:13px;font-weight:700;color:var(--neon2);font-family:var(--fmono);}
+.tcnt{font-size:11px;color:var(--muted);margin-top:2px;}
+.urow{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:padding-left .18s;}
+.urow:hover{padding-left:4px;}
+.urow:last-child{border-bottom:none;}
+.udot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.uname{font-size:12px;color:var(--text2);flex:1;}
+.ucnt{font-size:11px;color:var(--muted);font-family:var(--fmono);}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAGES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.pg{display:none;}
+.pg.on{display:block;animation:fadeUp .3s ease both;}
+.pghd{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.pgttl{font-family:var(--fhead);font-size:22px;font-weight:900;}
+.pgsub{color:var(--muted);font-size:13px;margin-top:4px;}
+
+/* Profile */
+.prof-hero{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:13px;}
+.prof-cover{height:136px;background:linear-gradient(135deg,rgba(176,38,255,.42),rgba(255,45,175,.28),rgba(0,255,209,.18));position:relative;}
+.prof-av-wrap{position:absolute;bottom:-32px;left:18px;}
+.prof-av{width:78px;height:78px;border-radius:50%;border:3.5px solid var(--card);background:linear-gradient(135deg,var(--neon),var(--neon3));display:flex;align-items:center;justify-content:center;font-size:27px;font-weight:900;color:#fff;font-family:var(--fhead);}
+.prof-body{padding:44px 18px 18px;}
+.prof-name{font-family:var(--fhead);font-size:20px;font-weight:900;margin-bottom:3px;}
+.prof-handle{font-size:13px;color:var(--muted);font-family:var(--fmono);margin-bottom:9px;}
+.prof-bio{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:13px;}
+.prof-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px;}
+.prof-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);}
+.pstat{text-align:center;padding:13px 6px;border-right:1px solid var(--border);cursor:pointer;transition:background .2s;}
+.pstat:hover{background:var(--card2);}
+.pstat:last-child{border-right:none;}
+.pstat-n{font-family:var(--fhead);font-size:18px;font-weight:900;}
+.pstat-l{font-size:10px;color:var(--muted);font-family:var(--fmono);}
+
+/* Scholarship card */
+.scrd{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:16px;margin-bottom:12px;cursor:pointer;transition:all .22s;animation:fadeUp .35s ease both;}
+.scrd:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 24px rgba(176,38,255,.12);}
+.scrd.ft{border-color:rgba(255,184,0,.42);box-shadow:0 0 22px rgba(255,184,0,.09);}
+.s-org-logo{width:38px;height:38px;border-radius:9px;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.s-ttl{font-family:var(--fhead);font-size:15px;font-weight:800;margin-bottom:7px;}
+.s-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:11px;}
+.s-amt{font-weight:800;font-size:15px;color:var(--neon2);font-family:var(--fhead);}
+.s-dl{font-size:11px;color:var(--muted);font-family:var(--fmono);}
+
+/* News */
+.nitem{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .15s;}
+.nitem:hover .nttl{color:var(--neon);}
+.nitem:last-child{border-bottom:none;}
+.nimg{width:78px;height:66px;border-radius:9px;object-fit:cover;flex-shrink:0;background:var(--card2);}
+.nsrc{font-size:10px;font-family:var(--fmono);font-weight:700;color:var(--neon);margin-bottom:3px;}
+.nttl{font-size:13px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:4px;transition:color .2s;}
+.ntm{font-size:11px;color:var(--muted);font-family:var(--fmono);}
+
+/* Event card */
+.ecard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:12px;cursor:pointer;transition:all .22s;animation:fadeUp .35s ease both;}
+.ecard:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 24px rgba(176,38,255,.12);}
+.eimg{width:100%;height:158px;object-fit:cover;display:block;}
+.ebody{padding:13px;}
+.ettl{font-family:var(--fhead);font-size:15px;font-weight:800;margin-bottom:6px;}
+.emeta{display:flex;gap:12px;font-size:12px;color:var(--muted);flex-wrap:wrap;}
+
+/* Book card */
+.bcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:13px;display:flex;gap:11px;margin-bottom:9px;cursor:pointer;transition:all .2s;animation:fadeUp .3s ease both;}
+.bcard:hover{border-color:var(--border2);transform:translateY(-1px);}
+.bcover{width:50px;height:70px;border-radius:7px;flex-shrink:0;background:linear-gradient(135deg,var(--card2),var(--card3));border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:23px;}
+.bttl{font-weight:700;font-size:14px;margin-bottom:3px;font-family:var(--fhead);}
+.bauth{font-size:12px;color:var(--muted);margin-bottom:7px;}
+
+/* Market */
+.mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.mcard{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;cursor:pointer;transition:all .22s;animation:fadeUp .3s ease both;}
+.mcard:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 4px 20px rgba(176,38,255,.12);}
+.mimg{width:100%;height:128px;object-fit:cover;background:var(--card2);}
+.mbody{padding:11px;}
+.mprice{font-weight:800;font-size:15px;color:var(--neon2);font-family:var(--fhead);}
+
+/* Fact carousel */
+.fact-box{background:linear-gradient(135deg,rgba(176,38,255,.14),rgba(0,255,209,.07));border:1px solid rgba(176,38,255,.22);border-radius:var(--rl);padding:18px;margin-bottom:14px;transition:all .3s ease;}
+.fact-txt{font-size:14px;color:var(--text);line-height:1.68;font-style:italic;margin-bottom:10px;}
+.fact-dept{font-size:10px;font-family:var(--fmono);color:var(--neon);}
+
+/* Auth */
+#auth{display:none;position:fixed;inset:0;z-index:400;background:var(--bg);overflow-y:auto;align-items:center;justify-content:center;padding:80px 16px 24px;}
+#auth.on{display:flex;}
+.acard{background:var(--card);border:1px solid var(--border);border-radius:var(--rxl);width:100%;max-width:500px;overflow:hidden;box-shadow:0 0 60px rgba(176,38,255,.14),0 24px 80px rgba(0,0,0,.6);}
+.aprg{height:3px;background:var(--border);}
+.apfill{height:100%;background:linear-gradient(90deg,var(--neon),var(--neon3));transition:width .4s ease;}
+.astep{display:none;animation:comboSlide .25s ease both;}
+.astep.on{display:block;}
+.ashd{padding:26px 26px 0;}
+.aslbl{font-size:10px;font-weight:700;font-family:var(--fmono);color:var(--muted);letter-spacing:1.2px;margin-bottom:13px;}
+.asttl{font-family:var(--fhead);font-size:23px;font-weight:900;margin-bottom:5px;line-height:1.2;}
+.assub{color:var(--muted);font-size:13px;margin-bottom:22px;line-height:1.55;}
+.abdy{padding:0 26px 26px;}
+.fld{margin-bottom:15px;}
+.flbl{font-size:11px;font-weight:700;font-family:var(--fmono);color:var(--muted);margin-bottom:6px;letter-spacing:.4px;display:flex;align-items:center;gap:5px;}
+.freq{color:var(--neon3);}
+.fhint{font-size:11px;color:var(--muted);margin-top:4px;font-family:var(--fmono);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.rtog{display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:3px;margin-bottom:18px;}
+.rbtn{padding:10px;border-radius:10px;border:none;background:none;color:var(--muted);font-weight:700;font-size:13px;cursor:pointer;font-family:var(--fmono);transition:all .2s;}
+.rbtn.on{background:linear-gradient(135deg,var(--neon),var(--neon3));color:#fff;box-shadow:0 4px 14px rgba(176,38,255,.4);}
+.pwbars{display:flex;gap:4px;margin-top:7px;}
+.pwbar{flex:1;height:3px;border-radius:2px;background:var(--border);transition:background .3s;}
+.pwlbl{font-size:10px;font-family:var(--fmono);color:var(--muted);margin-top:4px;}
+.vopts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:15px;}
+.vopt{background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:13px;cursor:pointer;transition:all .2s;text-align:center;}
+.vopt:hover{border-color:var(--neon);}
+.vopt.on{border-color:var(--neon);background:rgba(176,38,255,.1);box-shadow:0 0 14px rgba(176,38,255,.2);}
+.upzone{border:2px dashed rgba(176,38,255,.3);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--card2);}
+.upzone:hover,.upzone.on{border-color:var(--neon);background:rgba(176,38,255,.06);}
+.otp-row{display:flex;gap:9px;justify-content:center;margin:18px 0;}
+.otp-in{width:48px;height:56px;background:var(--card2);border:1.5px solid var(--border);border-radius:11px;text-align:center;font-size:22px;font-weight:700;font-family:var(--fhead);color:var(--text);outline:none;transition:all .2s;}
+.otp-in:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(176,38,255,.15);}
+.otp-in.ok{border-color:var(--neon2);color:var(--neon2);}
+.bbk{background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--fmono);font-size:12px;display:flex;align-items:center;gap:5px;padding:0;margin-bottom:16px;transition:color .2s;}
+.bbk:hover{color:var(--neon);}
+.unigrid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;max-height:156px;overflow-y:auto;padding:2px;}
+.uchip{background:var(--card2);border:1px solid var(--border);border-radius:7px;padding:6px 4px;text-align:center;cursor:pointer;font-size:10px;font-weight:700;font-family:var(--fmono);color:var(--muted);transition:all .15s;}
+.uchip:hover{border-color:var(--neon);color:var(--neon);}
+.uchip.on{color:var(--neon2);border-color:rgba(0,255,209,.5);}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media(max-width:1100px){.rside{display:none;}}
+@media(max-width:768px){
+  .lside{display:none !important;}
+  .mobnav{display:block;}
+  .feed{padding:12px 10px 80px;max-width:100%;}
+  .t-search{max-width:none;}
+  .mgrid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .t-logo{font-size:18px;}
+  .frow{grid-template-columns:1fr;}
+  .vopts{grid-template-columns:1fr 1fr;}
+  .mgrid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND -->
+<div class="bg-layer"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="bg-grid"></div>
+
+<!-- ═══════════════════════════
+     LOADER
+═══════════════════════════ -->
+<div id="loader">
+  <div class="l-bg">
+    <div class="l-orb lo1"></div><div class="l-orb lo2"></div><div class="l-orb lo3"></div>
+    <div class="l-grid"></div><div class="l-scan"></div>
+  </div>
+  <div class="l-content">
+    <div class="l-crest">
+      <div class="l-ring1"></div><div class="l-ring2"></div>
+      <div class="l-orbit"><div class="l-od"></div></div>
+      <div class="l-orbit2"><div class="l-od2"></div></div>
+      <div class="l-orbit3"><div class="l-od3"></div></div>
+      <div class="l-core">🎓</div>
+    </div>
+    <div class="l-logo">CampusVibe</div>
+    <div class="l-tag">Nigeria's Student Universe</div>
+    <div class="l-waves">
+      <div class="l-wb lb1"></div><div class="l-wb lb2"></div><div class="l-wb lb3"></div>
+      <div class="l-wb lb4"></div><div class="l-wb lb5"></div><div class="l-wb lb6"></div><div class="l-wb lb7"></div>
+    </div>
+    <div class="l-fact-wrap">
+      <div class="l-fact">
+        <div class="l-fact-lbl" id="flbl">DID YOU KNOW</div>
+        <div class="l-fact-txt" id="ftxt">Nigeria has over 170 universities — home to 2.1 million enrolled students. CampusVibe connects them all.<span class="l-cursor"></span></div>
+      </div>
+    </div>
+    <div class="l-prog-wrap">
+      <div class="l-prog-track"><div class="l-prog-fill" id="lbar"></div></div>
+      <div class="l-prog-row"><span id="llbl">Connecting campuses...</span><span id="lpct">0%</span></div>
+    </div>
+    <div class="l-note" id="lnote">Preparing your vibe...</div>
+  </div>
+  <div class="l-ticker"><div class="l-ticker-inner" id="ltick"></div></div>
+</div>
+
+<!-- ═══════════════════════════
+     APP
+═══════════════════════════ -->
+<div id="app">
+  <!-- TOP NAV -->
+  <nav class="topbar" id="topbar">
+    <div class="t-logo" onclick="goTo('home')">CampusVibe</div>
+    <div class="t-search">
+      <span class="t-search-icon">🔍</span>
+      <input placeholder="Search students, unis, events..." id="sInput" autocomplete="off"
+        oninput="doSearch(this.value)" onfocus="openSDrop()" onblur="closeSDrop()"/>
+      <div class="t-sdrop" id="sDrop"></div>
+    </div>
+    <div class="t-acts">
+      <div class="t-ibtn" onclick="openNotif()">🔔<span class="t-badge">12</span></div>
+      <div class="t-ibtn" onclick="goTo('messages')">✉️<span class="t-badge">3</span></div>
+      <div class="t-av" onclick="goTo('profile')">B</div>
+    </div>
+  </nav>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+    <!-- LEFT SIDEBAR -->
+    <aside class="lside">
+      <div id="leftNav"></div>
+      <div class="pf-mini" onclick="goTo('profile')">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--neon3));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;font-family:var(--fhead);">B</div>
+          <div>
+            <div style="font-weight:700;font-size:13px;font-family:var(--fhead);">Buhari Mohammed</div>
+            <div style="font-size:11px;color:var(--muted);font-family:var(--fmono);">@buhari_cv</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:9px;">
+          <span class="ubadge" style="background:rgba(0,135,81,.2);color:#008751;border:1px solid rgba(0,135,81,.35);">UNILAG</span>
+          <span class="lvbadge">400L</span>
+          <span style="background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:10px;font-family:var(--fmono);">Law</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- FEED / PAGES -->
+    <main class="feed">
+      <!-- HOME -->
+      <div class="pg on" id="pg-home">
+        <div class="refresh-row" id="rrow"><button class="rpill" onclick="refreshFeed()">✨ New posts — tap to refresh</button></div>
+        <div class="stories" id="storiesWrap"><div class="stories-row" id="storiesRow"></div></div>
+        <div class="compose" id="compose">
+          <div class="compose-row">
+            <div class="compose-av">B</div>
+            <textarea class="compose-ta" id="cta" placeholder="What's the vibe on campus today? 🔥" rows="2" onfocus="composeOn()" onblur="composeOff()"></textarea>
+          </div>
+          <div class="compose-tools-row" id="ctoolbar" style="display:none;">
+            <div class="compose-icons">
+              <button class="ctool" onclick="showT('📷 Photo upload coming soon!')">📷</button>
+              <button class="ctool" onclick="showT('🎬 Video coming soon!')">🎬</button>
+              <button class="ctool" onclick="showT('📊 Polls coming soon!')">📊</button>
+              <button class="ctool">😂</button>
+              <button class="ctool" onclick="showT('📍 Location coming soon!')">📍</button>
+            </div>
+            <button class="btn bp bsm" onclick="postSubmit()">Post It ⚡</button>
+          </div>
+        </div>
+        <div class="ftabs" id="feedTabs"></div>
+        <div id="postsWrap"></div>
+        <div style="text-align:center;padding:18px 0 8px;">
+          <button class="btn bo" id="lmBtn" onclick="loadMore()">Load more vibes ↓</button>
+        </div>
+      </div>
+      <!-- EXPLORE -->
+      <div class="pg" id="pg-explore">
+        <div class="pghd"><div class="pgttl">🔍 Explore</div><div class="pgsub">Discover students, universities and events across Nigeria.</div></div>
+        <div id="explorePg"></div>
+      </div>
+      <!-- EVENTS -->
+      <div class="pg" id="pg-events">
+        <div class="pghd"><div class="pgttl">🏆 Events</div><div class="pgsub">Pageants, quizzes, debates and sports — all inter-university.</div></div>
+        <div class="ftabs" id="evtTabs"></div>
+        <div id="evtWrap"></div>
+      </div>
+      <!-- SCHOLARSHIPS -->
+      <div class="pg" id="pg-scholarships">
+        <div class="pghd">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div><div class="pgttl">🎓 Scholarship Board</div><div class="pgsub">Verified scholarships from organisations, companies and individuals.</div></div>
+            <button class="btn bo bsm" onclick="openM('scholM')">+ List a Scholarship</button>
+          </div>
+        </div>
+        <div class="ftabs" id="scholTabs"></div>
+        <div id="scholWrap"></div>
+      </div>
+      <!-- NEWS -->
+      <div class="pg" id="pg-news">
+        <div class="pghd"><div class="pgttl">📰 Campus News</div><div class="pgsub">AI-curated education news, ASUU updates and radio frequencies.</div></div>
+        <div class="ftabs" id="newsTabs"></div>
+        <div id="newsWrap"></div>
+      </div>
+      <!-- LIBRARY -->
+      <div class="pg" id="pg-library">
+        <div class="pghd"><div class="pgttl">📚 Knowledge Hub</div><div class="pgsub">Books, resources and real knowledge beyond your curriculum.</div></div>
+        <div id="libWrap"></div>
+      </div>
+      <!-- MARKETPLACE -->
+      <div class="pg" id="pg-marketplace">
+        <div class="pghd"><div class="pgttl">💼 Marketplace</div><div class="pgsub">Student services, gigs, digital products and employer listings.</div></div>
+        <div class="ftabs" id="mktTabs"></div>
+        <div id="mktWrap"></div>
+      </div>
+      <!-- PROFILE -->
+      <div class="pg" id="pg-profile"><div id="profWrap"></div></div>
+      <!-- MESSAGES -->
+      <div class="pg" id="pg-messages">
+        <div class="pghd"><div class="pgttl">✉️ Messages</div><div class="pgsub">Your conversations.</div></div>
+        <div id="msgWrap"></div>
+      </div>
+      <!-- ALUMNI -->
+      <div class="pg" id="pg-alumni">
+        <div class="pghd"><div class="pgttl">🏅 Alumni Zone</div><div class="pgsub">Mentors and alumni. Access is student-governed.</div></div>
+        <div id="alumniWrap"></div>
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="rside" id="rside"></aside>
+  </div>
+
+  <!-- MOBILE NAV -->
+  <nav class="mobnav"><div class="mobnav-in" id="mobnav"></div></nav>
+</div>
+
+<!-- AUTH -->
+<div id="auth">
+  <div class="acard">
+    <div class="aprg"><div class="apfill" id="apfill" style="width:20%"></div></div>
+    <!-- Step 1 -->
+    <div class="astep on" id="as1">
+      <div class="ashd">
+        <div class="aslbl">STEP 1 OF 5</div>
+        <div class="asttl">Who are you on <span style="background:linear-gradient(135deg,var(--neon),var(--neon3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">campus?</span></div>
+        <div class="assub">Your role determines your access level on CampusVibe.</div>
+      </div>
+      <div class="abdy">
+        <div class="rtog"><button class="rbtn on" id="rStu" onclick="setRole('student')">🎓 Student</button><button class="rbtn" id="rAlu" onclick="setRole('alumni')">🏅 Alumni</button></div>
+        <div id="roleBox" style="background:rgba(0,255,209,.06);border:1px solid rgba(0,255,209,.2);border-radius:var(--r);padding:14px;margin-bottom:18px;">
+          <div style="font-weight:700;font-size:13px;color:var(--neon2);margin-bottom:5px;">✅ Full Access — Student</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8;">• Post, comment, react and connect<br>• Join your university community<br>• Participate in events, pageants, debates<br>• Vote on all campus matters</div>
+        </div>
+        <button class="btn bp bfull" onclick="aStep(2)">Continue →</button>
+        <div style="text-align:center;margin-top:13px;font-size:12px;color:var(--muted);">Already here? <span style="color:var(--neon);cursor:pointer;" onclick="aStep('login')">Sign in</span></div>
+      </div>
+    </div>
+    <!-- Step 2 -->
+    <div class="astep" id="as2">
+      <div class="ashd">
+        <button class="bbk" onclick="aStep(1)">← Back</button>
+        <div class="aslbl">STEP 2 OF 5</div>
+        <div class="asttl">Create your <span style="background:linear-gradient(135deg,var(--neon),var(--neon3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">profile</span></div>
+        <div class="assub">Your handle is your campus identity.</div>
+      </div>
+      <div class="abdy">
+        <div class="frow">
+          <div class="fld"><div class="flbl">FIRST NAME <span class="freq">*</span></div><input class="inp" placeholder="Chiamaka"/></div>
+          <div class="fld"><div class="flbl">LAST NAME <span class="freq">*</span></div><input class="inp" placeholder="Obi"/></div>
+        </div>
+        <div class="fld">
+          <div class="flbl">HANDLE <span class="freq">*</span></div>
+          <div style="position:relative;"><span style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-family:var(--fmono);">@</span><input class="inp" style="padding-left:26px;" placeholder="chi_vibes" id="handle" oninput="chkHandle(this)"/></div>
+          <div class="fhint" id="hHint">Letters, numbers and underscores only.</div>
+        </div>
+        <div class="fld"><div class="flbl">EMAIL <span class="freq">*</span></div><input class="inp" type="email" placeholder="chiamaka@gmail.com"/></div>
+        <div class="fld">
+          <div class="flbl">PASSWORD <span class="freq">*</span></div>
+          <input class="inp" type="password" placeholder="Min. 8 characters" id="pw" oninput="chkPw(this)"/>
+          <div class="pwbars"><div class="pwbar" id="pb1"></div><div class="pwbar" id="pb2"></div><div class="pwbar" id="pb3"></div><div class="pwbar" id="pb4"></div></div>
+          <div class="pwlbl" id="pwlbl">Enter a password</div>
+        </div>
+        <button class="btn bp bfull" onclick="aStep(3)">Next: University Info →</button>
+      </div>
+    </div>
+    <!-- Step 3 -->
+    <div class="astep" id="as3">
+      <div class="ashd">
+        <button class="bbk" onclick="aStep(2)">← Back</button>
+        <div class="aslbl">STEP 3 OF 5</div>
+        <div class="asttl">Your <span style="background:linear-gradient(135deg,var(--neon),var(--neon3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">academic</span> identity</div>
+        <div class="assub">Your uni, faculty, department and level.</div>
+      </div>
+      <div class="abdy">
+        <div class="fld">
+          <div class="flbl">UNIVERSITY <span class="freq">*</span></div>
+          <input class="inp" placeholder="Search university..." id="uSearch" oninput="filterU(this.value)" style="margin-bottom:7px;"/>
+          <div class="unigrid" id="uGrid"></div>
+          <div style="font-size:11px;color:var(--muted);margin-top:5px;font-family:var(--fmono);" id="uSel">No university selected</div>
+        </div>
+        <div class="frow">
+          <div class="fld"><div class="flbl">FACULTY <span class="freq">*</span></div>
+            <select class="inp" id="facSel" onchange="loadD()">
+              <option value="">Select faculty</option>
+              <option>Sciences</option><option>Social Sciences</option><option>Arts & Humanities</option>
+              <option>Engineering & Tech</option><option>Law</option><option>Medicine & Surgery</option>
+              <option>Education</option><option>Agriculture</option><option>Management Sciences</option><option>Environmental Sciences</option>
+            </select>
+          </div>
+          <div class="fld"><div class="flbl">DEPARTMENT <span class="freq">*</span></div><select class="inp" id="deptSel"><option value="">Select dept</option></select></div>
+        </div>
+        <div class="frow">
+          <div class="fld"><div class="flbl">LEVEL <span class="freq">*</span></div>
+            <select class="inp"><option value="">Level</option><option>100L</option><option>200L</option><option>300L</option><option>400L</option><option>500L</option><option>600L</option><option>Postgraduate</option></select>
+          </div>
+          <div class="fld"><div class="flbl">ENTRY YEAR <span class="freq">*</span></div>
+            <select class="inp"><option value="">Year</option><option>2024</option><option>2023</option><option>2022</option><option>2021</option><option>2020</option><option>2019</option></select>
+          </div>
+        </div>
+        <div class="fld"><div class="flbl">HALL OF RESIDENCE</div><input class="inp" placeholder="e.g. Angola Hostel..."/></div>
+        <div class="fld"><div class="flbl">MATRIC NUMBER <span class="freq">*</span></div><input class="inp" placeholder="e.g. 190402001"/><div class="fhint">Verification only. Never shown publicly.</div></div>
+        <button class="btn bp bfull" onclick="aStep(4)">Next: Verify Identity →</button>
+      </div>
+    </div>
+    <!-- Step 4 -->
+    <div class="astep" id="as4">
+      <div class="ashd">
+        <button class="bbk" onclick="aStep(3)">← Back</button>
+        <div class="aslbl">STEP 4 OF 5</div>
+        <div class="asttl">Prove you're a <span style="background:linear-gradient(135deg,var(--neon),var(--neon3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">student</span></div>
+        <div class="assub">Choose your verification method.</div>
+      </div>
+      <div class="abdy">
+        <div class="vopts">
+          <div class="vopt on" id="v1" onclick="setV(1)"><div style="font-size:26px;margin-bottom:6px;">🪪</div><div style="font-weight:700;font-size:12px;margin-bottom:2px;">Student ID</div><div style="font-size:11px;color:var(--muted);">Upload your ID card</div></div>
+          <div class="vopt" id="v2" onclick="setV(2)"><div style="font-size:26px;margin-bottom:6px;">📋</div><div style="font-weight:700;font-size:12px;margin-bottom:2px;">Portal Screenshot</div><div style="font-size:11px;color:var(--muted);">Your portal dashboard</div></div>
+          <div class="vopt" id="v3" onclick="setV(3)"><div style="font-size:26px;margin-bottom:6px;">📧</div><div style="font-weight:700;font-size:12px;margin-bottom:2px;">School Email</div><div style="font-size:11px;color:var(--muted);">.edu.ng address</div></div>
+          <div class="vopt" id="v4" onclick="setV(4)"><div style="font-size:26px;margin-bottom:6px;">📄</div><div style="font-weight:700;font-size:12px;margin-bottom:2px;">Admission Letter</div><div style="font-size:11px;color:var(--muted);">Official letter</div></div>
+        </div>
+        <div class="upzone" id="upzone" onclick="document.getElementById('fIn').click()">
+          <div style="font-size:30px;margin-bottom:7px;" id="upIcon">📤</div>
+          <div style="font-weight:700;font-size:14px;margin-bottom:4px;" id="upTitle">Upload Student ID Card</div>
+          <div style="font-size:12px;color:var(--muted);">Tap to browse · JPG, PNG, PDF · Max 5MB</div>
+        </div>
+        <input type="file" id="fIn" style="display:none;" accept="image/*,.pdf" onchange="fileChosen(this)"/>
+        <div style="background:rgba(176,38,255,.06);border:1px solid rgba(176,38,255,.16);border-radius:10px;padding:11px;margin-top:11px;font-size:12px;color:var(--muted);line-height:1.65;">🔒 <strong style="color:var(--text);">Your document is private.</strong> Used for one-time verification only.</div>
+        <button class="btn bp bfull" style="margin-top:15px;" onclick="aStep(5)">Submit Verification →</button>
+      </div>
+    </div>
+    <!-- Step 5 -->
+    <div class="astep" id="as5">
+      <div class="ashd">
+        <div class="aslbl">STEP 5 OF 5</div>
+        <div class="asttl">Check your <span style="background:linear-gradient(135deg,var(--neon),var(--neon3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">inbox</span></div>
+        <div class="assub">We sent a 6-digit code to your email.</div>
+      </div>
+      <div class="abdy">
+        <div class="otp-row">
+          <input class="otp-in" maxlength="1" type="text" oninput="oNext(this,'op2')" onkeydown="oBk(event,this,'')"/>
+          <input class="otp-in" maxlength="1" type="text" id="op2" oninput="oNext(this,'op3')" onkeydown="oBk(event,this,'op1')"/>
+          <input class="otp-in" maxlength="1" type="text" id="op3" oninput="oNext(this,'op4')" onkeydown="oBk(event,this,'op2')"/>
+          <input class="otp-in" maxlength="1" type="text" id="op4" oninput="oNext(this,'op5')" onkeydown="oBk(event,this,'op3')"/>
+          <input class="otp-in" maxlength="1" type="text" id="op5" oninput="oNext(this,'op6')" onkeydown="oBk(event,this,'op4')"/>
+          <input class="otp-in" maxlength="1" type="text" id="op6" oninput="oNext(this,'')" onkeydown="oBk(event,this,'op5')"/>
+        </div>
+        <div style="text-align:center;font-size:12px;color:var(--muted);font-family:var(--fmono);margin-bottom:18px;">Didn't get it? <span style="color:var(--neon);cursor:pointer;">Resend code</span></div>
+        <div style="background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:18px;">
+          <div style="font-weight:700;font-size:13px;margin-bottom:9px;font-family:var(--fhead);">🎓 What happens next</div>
+          <div style="font-size:12px;color:var(--muted);line-height:2.1;">① Email confirmed → account created<br>② ID reviewed within <strong style="color:var(--neon2);">24–48 hours</strong><br>③ Full access unlocked once verified ✅</div>
+        </div>
+        <button class="btn bp bfull" onclick="authDone()">Confirm & Join CampusVibe 🎉</button>
+      </div>
+    </div>
+    <!-- Login -->
+    <div class="astep" id="asLogin">
+      <div class="ashd">
+        <div class="asttl">Welcome <span style="background:linear-gradient(135deg,var(--neon),var(--neon3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">back 👋</span></div>
+        <div class="assub">Sign in to your CampusVibe account.</div>
+      </div>
+      <div class="abdy">
+        <div class="fld"><div class="flbl">EMAIL OR HANDLE</div><input class="inp" placeholder="@yourhandle or email"/></div>
+        <div class="fld"><div class="flbl">PASSWORD</div><input class="inp" type="password" placeholder="••••••••"/>
+          <div style="text-align:right;margin-top:5px;"><span style="font-size:12px;color:var(--neon);cursor:pointer;font-family:var(--fmono);">Forgot password?</span></div>
+        </div>
+        <button class="btn bp bfull" onclick="authDone()">Sign In →</button>
+        <div style="text-align:center;margin-top:13px;font-size:12px;color:var(--muted);">New? <span style="color:var(--neon);cursor:pointer;" onclick="aStep(1)">Join CampusVibe</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="ovl" id="notifM" onclick="closeM('notifM')">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:400px;">
+    <div class="mhdr"><div class="mttl">🔔 Notifications</div><div class="mclose" onclick="closeM('notifM')">✕</div></div>
+    <div class="mbody" id="notifBody"></div>
+  </div>
+</div>
+<div class="ovl" id="scholM" onclick="closeM('scholM')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="mhdr"><div class="mttl">🎓 List a Scholarship</div><div class="mclose" onclick="closeM('scholM')">✕</div></div>
+    <div class="mbody">
+      <div style="background:rgba(255,184,0,.07);border:1px solid rgba(255,184,0,.22);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--muted);line-height:1.65;">⚠️ Scholarship providers receive <strong style="color:var(--gold);">limited platform access</strong> — scholarship listings only. No access to student feeds.</div>
+      <div class="fld"><div class="flbl">ORGANISATION NAME <span class="freq">*</span></div><input class="inp" placeholder="e.g. Dangote Foundation"/></div>
+      <div class="fld"><div class="flbl">ORG TYPE <span class="freq">*</span></div><select class="inp"><option>Company / Corporation</option><option>NGO / Non-Profit</option><option>Government Body</option><option>Individual / Alumni Donor</option><option>International Organisation</option></select></div>
+      <div class="fld"><div class="flbl">CONTACT EMAIL <span class="freq">*</span></div><input class="inp" type="email" placeholder="contact@org.com"/></div>
+      <div class="fld"><div class="flbl">MISSION / ABOUT</div><textarea class="inp" rows="3" placeholder="Brief description..." style="resize:none;"></textarea></div>
+      <button class="btn bp bfull" onclick="showT('✅ Application submitted! Review within 24 hours.');closeM('scholM')">Submit Application →</button>
+    </div>
+  </div>
+</div>
+<div class="ovl" id="storyM" onclick="closeM('storyM')">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:340px;">
+    <div class="mhdr"><div class="mttl" id="storyMT">Story</div><div class="mclose" onclick="closeM('storyM')">✕</div></div>
+    <div class="mbody" id="storyMB"></div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+/* ════════════════════════════════════════
+   DATA
+════════════════════════════════════════ */
+const UNIS={
+  UNILAG:{c:'#008751',f:'University of Lagos'},UI:{c:'#6B21A8',f:'University of Ibadan'},
+  OAU:{c:'#8B0000',f:'Obafemi Awolowo University'},UNIBEN:{c:'#15803D',f:'University of Benin'},
+  ABU:{c:'#1D4ED8',f:'Ahmadu Bello University'},FUTA:{c:'#EA580C',f:'Federal Univ. of Tech. Akure'},
+  LASU:{c:'#DC2626',f:'Lagos State University'},UNILORIN:{c:'#0F766E',f:'University of Ilorin'},
+  COVENANT:{c:'#9F1239',f:'Covenant University'},UNN:{c:'#7C3AED',f:'Univ. of Nigeria Nsukka'},
+  UNIPORT:{c:'#1E40AF',f:'University of Port Harcourt'},FUNAAB:{c:'#4D7C0F',f:'FUNAAB Abeokuta'},
+  BABCOCK:{c:'#166534',f:'Babcock University'},EKSU:{c:'#92400E',f:'Ekiti State University'},
+  UNIABUJA:{c:'#374151',f:'University of Abuja'},UNIZIK:{c:'#6D28D9',f:'Nnamdi Azikiwe University'},
+  DELSU:{c:'#065F46',f:'Delta State University'},IMSU:{c:'#7F1D1D',f:'Imo State University'},
+};
+
+const DMAP={
+  Sciences:['Biology','Chemistry','Physics','Mathematics','Computer Science','Biochemistry','Geology','Statistics','Microbiology'],
+  'Social Sciences':['Economics','Sociology','Political Science','Psychology','Geography','Criminology','Mass Communication'],
+  'Arts & Humanities':['English','History','Philosophy','Linguistics','Theatre Arts','Music','Religious Studies','Arabic','French'],
+  'Engineering & Tech':['Electrical Engineering','Civil Engineering','Mechanical Engineering','Chemical Engineering','Computer Engineering','Agricultural Engineering','Petroleum Engineering'],
+  Law:['Law (LL.B)','Islamic Law','International Law'],
+  'Medicine & Surgery':['Medicine & Surgery (MB;BS)','Nursing Science','Pharmacy','Medical Laboratory Science','Physiotherapy','Dentistry'],
+  Education:['Education/English','Education/Biology','Education/Mathematics','Adult Education','Guidance & Counselling'],
+  Agriculture:['Agronomy','Animal Science','Agricultural Economics','Food Science & Technology','Fisheries'],
+  'Management Sciences':['Accounting','Business Administration','Banking & Finance','Marketing','Public Administration'],
+  'Environmental Sciences':['Architecture','Urban & Regional Planning','Estate Management','Surveying & Geoinformatics','Building Technology'],
+};
+
+const LFACTS=[
+  {l:'DID YOU KNOW',t:'Nigeria has over 170 universities — home to 2.1 million enrolled students. CampusVibe connects them all.'},
+  {l:'CAMPUS LIFE',t:'The University of Ibadan, founded in 1948, was the first university in Nigeria and remains one of Africa\'s finest.'},
+  {l:'FUN FACT',t:'OAU Ile-Ife has one of the most beautiful campuses in Africa. Students literally have a forest reserve on campus. 🌿'},
+  {l:'STUDENT POWER',t:'Nigerian students are among the most entrepreneurially active in Africa. 1 in 3 starts a business before graduation.'},
+  {l:'CAMPUS VIBE',t:'Over 40 Student Union Governments across Nigerian universities. Your SU president works harder than you think. Mostly 😅'},
+  {l:'DID YOU KNOW',t:'UNILAG was established in 1962 and sits on 700 acres of prime Lagos coastal land. Your campus really is everything.'},
+];
+
+const LSTEPS=[
+  {l:'Connecting campuses...',p:15},{l:'Loading university data...',p:30},
+  {l:'Verifying student IDs...',p:47},{l:'Fetching your feed...',p:62},
+  {l:'Loading scholarships...',p:76},{l:'Preparing Knowledge Hub...',p:89},
+  {l:'Welcome to CampusVibe! 🎉',p:100},
+];
+
+const NAVITEMS=[
+  {id:'home',ic:'🏠',lb:'Home',sec:''},
+  {id:'explore',ic:'🔍',lb:'Explore',sec:''},
+  {id:'events',ic:'🏆',lb:'Events',sec:'',badge:'LIVE'},
+  {id:'scholarships',ic:'🎓',lb:'Scholarships',sec:''},
+  {id:'news',ic:'📰',lb:'Campus News',sec:'',badge:'NEW'},
+  {id:'library',ic:'📚',lb:'Knowledge Hub',sec:'DISCOVER'},
+  {id:'marketplace',ic:'💼',lb:'Marketplace',sec:''},
+  {id:'alumni',ic:'🏅',lb:'Alumni Zone',sec:'COMMUNITY'},
+  {id:'profile',ic:'👤',lb:'My Profile',sec:'ME'},
+];
+
+const MOBNAV=[
+  {id:'home',ic:'🏠',lb:'Home'},{id:'explore',ic:'🔍',lb:'Explore'},
+  {id:'events',ic:'🏆',lb:'Events'},{id:'scholarships',ic:'🎓',lb:'Scholr.'},
+  {id:'profile',ic:'👤',lb:'Profile'},
+];
+
+const POSTS=[
+  {id:1,user:'Chiamaka Obi',handle:'@chi_vibes',uni:'UNILAG',dept:'Mass Communication',level:'400L',hall:'Fagunwa Hall',ini:'CO',ver:true,exec:false,t:'2m ago',txt:'This UNILAG library is giving cemetery energy today 💀 E don reach 12am and these people still have 200 students inside. Exam season no dey smile for anybody. Who\'s still awake? 🫠',img:'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=700&q=80',tags:['#ExamSzn','#UNILAG','#NightLib'],type:'normal',lk:847,cm:134,rp:67,liked:false},
+  {id:2,user:'Tobi Adeyemi',handle:'@tobstarr',uni:'OAU',dept:'Computer Science',level:'300L',hall:'Angola Hostel',ini:'TA',ver:false,exec:false,t:'14m ago',txt:'OAU pls explain why the borehole has been dry for 3 days. We are students not camels 🐪 Meanwhile ASUU is threatening strike again. This country wants to scatter us completely.',img:null,tags:['#OAU','#StudentLife','#ASUU'],type:'normal',lk:2341,cm:412,rp:890,liked:true},
+  {id:3,user:'Ngozi Eze',handle:'@ngoziqueennn',uni:'UI',dept:'Medicine & Surgery',level:'500L',hall:'Nnamdi Azikiwe Hall',ini:'NE',ver:true,exec:false,t:'1h ago',txt:'UI Medical students — anatomy practical scheduled for tomorrow has been MOVED to Lecture Theatre 4. Please share! 500L MB;BS 2025 class photo drops this Friday 🎓✨',img:'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=700&q=80',tags:['#UI','#MedStudents','#500L'],type:'announce',lk:1204,cm:203,rp:445,liked:false},
+  {id:4,user:'CampusVibe Events',handle:'@campusvibe',uni:'ALL',ini:'CV',ver:true,isOff:true,t:'3h ago',txt:'🔥 CAMPUSVIBE MISS CAMPUS 2025 is officially OPEN for nominations! Any verified female student from any Nigerian university can be nominated. Voting opens March 15. Drop your university below — who are you nominating? 👇',img:'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=700&q=80',tags:['#MissCampus2025','#CampusVibe'],type:'event',lk:8920,cm:2100,rp:3400,liked:false},
+  {id:5,user:'Chukwuemeka Okonkwo',handle:'@emeka_prez',uni:'ABU',dept:'Political Science',level:'400L',hall:'Ribadu Hall',ini:'CO',ver:true,exec:true,execT:'SU President',t:'5h ago',txt:'📢 OFFICIAL: ABU Students\' Union Government meets with the VC tomorrow at 10am regarding the new hostel allocation policy. Every student\'s concern is heard. Full update follows. 🙏',img:null,tags:['#ABU','#SUG','#OfficialUpdate'],type:'exec',lk:3100,cm:780,rp:1200,liked:false},
+  {id:6,user:'Funmilayo Bello',handle:'@funmi.reads',uni:'COVENANT',dept:'Computer Science',level:'200L',hall:'Grace Hall',ini:'FB',ver:true,exec:false,t:'8h ago',txt:'Honestly Covenant University has some of the most brilliant minds I\'ve ever met. Proud to be here 💎 200L CS students — form study groups NOW before mid-semester tests hit you sideways 😭',img:'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=700&q=80',tags:['#Covenant','#CSStudents','#StudyTips'],type:'normal',lk:567,cm:89,rp:120,liked:false},
+];
+
+const MPOSTS=[
+  {id:7,user:'Adaeze Okafor',handle:'@ada_law',uni:'UNN',dept:'Law',level:'300L',hall:'Queens Hall',ini:'AO',ver:false,exec:false,t:'10h ago',txt:'Law school is not for the weak. Three moot courts this week alone plus a full research paper due Friday. UNN Law students — we move together or we fall apart. Share your notes ❤️',img:null,tags:['#UNN','#LawStudents'],type:'normal',lk:389,cm:67,rp:55,liked:false},
+  {id:8,user:'Ibrahim Musa',handle:'@ibrahim.eng',uni:'FUTA',dept:'Electrical Engineering',level:'500L',hall:'Block D',ini:'IM',ver:true,exec:false,t:'12h ago',txt:'FUTA final year project done. My team just finished building a solar-powered irrigation control system. Nigerian engineers are solving Nigerian problems. Nobody can tell me otherwise 🔋⚡',img:'https://images.unsplash.com/photo-1518770660439-4636190af475?w=700&q=80',tags:['#FUTA','#Engineering','#FinalYear'],type:'normal',lk:1456,cm:210,rp:340,liked:false},
+];
+
+const SCHOLS=[
+  {id:1,org:'Dangote Foundation',ot:'Company',oi:'🏭',ft:true,ttl:'Dangote Future Leaders Scholarship 2025',desc:'Full scholarship covering tuition, accommodation and stipend for outstanding students in STEM, Law and Business across all Nigerian universities.',amt:'₦2.5M / year',dl:'May 30, 2025',tags:[{l:'STEM',c:'#00FFD1',b:'rgba(0,255,209,.1)'},{l:'Law',c:'#B026FF',b:'rgba(176,38,255,.1)'},{l:'Business',c:'#FFB800',b:'rgba(255,184,0,.1)'}],unis:'All Universities',lv:'300L–500L'},
+  {id:2,org:'Tony Elumelu Foundation',ot:'Foundation',oi:'💼',ft:true,ttl:'TEF Entrepreneurship Seed Fund 2025',desc:'Seed funding and mentorship for student entrepreneurs with viable business ideas. A launchpad, not just a scholarship.',amt:'$5,000 USD',dl:'Jun 15, 2025',tags:[{l:'Entrepreneurship',c:'#FF2DAF',b:'rgba(255,45,175,.1)'},{l:'All Faculties',c:'#00FFD1',b:'rgba(0,255,209,.1)'}],unis:'All Universities',lv:'All Levels'},
+  {id:3,org:'NNPC / Total Energies',ot:'Company',oi:'⛽',ft:false,ttl:'NNPC Total Energies Scholarship Award',desc:'Annual merit-based scholarship for Engineering and Geoscience students. Renewable for 3 years with minimum CGPA of 4.0.',amt:'₦800K / year',dl:'Apr 28, 2025',tags:[{l:'Engineering',c:'#EA580C',b:'rgba(234,88,12,.1)'},{l:'Geoscience',c:'#B026FF',b:'rgba(176,38,255,.1)'}],unis:'Federal Universities Only',lv:'200L–400L'},
+  {id:4,org:'Dr. Amina Al-Rashid',ot:'Individual',oi:'👩‍⚕️',ft:false,ttl:'Women in Medicine Excellence Award',desc:'A personal scholarship by Dr. Amina Al-Rashid — UNILAG Medicine alumna now in the UK — for outstanding female medical students.',amt:'₦400K once-off',dl:'Jul 1, 2025',tags:[{l:'Medicine',c:'#DC2626',b:'rgba(220,38,38,.1)'},{l:'Female Students',c:'#FF2DAF',b:'rgba(255,45,175,.1)'}],unis:'All Universities',lv:'400L–600L'},
+];
+
+const NEWS=[
+  {src:'ASUU',ttl:'ASUU issues 21-day warning strike notice over unpaid salaries and IPPIS implementation concerns',t:'2 hours ago',urg:true,img:'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=200&q=80'},
+  {src:'NUC',ttl:'National Universities Commission accredits 12 new degree programmes across 8 Nigerian institutions',t:'5 hours ago',urg:false,img:'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=200&q=80'},
+  {src:'Ministry of Education',ttl:'Federal Government approves ₦47 billion education budget supplement for the 2025 academic year',t:'1 day ago',urg:false,img:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200&q=80'},
+  {src:'Presidency',ttl:'President signs Executive Order mandating universities to fully digitise student records by December 2025',t:'2 days ago',urg:false,img:'https://images.unsplash.com/photo-1555848962-6e79363ec58f?w=200&q=80'},
+  {src:'NANS',ttl:'National Association of Nigerian Students condemns recent hostel demolitions at three federal universities',t:'3 days ago',urg:false,img:'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=200&q=80'},
+];
+
+const RADIO=[
+  {uni:'UNILAG',st:'UnilagFM',fr:'103.1 FM',city:'Lagos'},{uni:'OAU',st:'OAU Campus Radio',fr:'89.3 FM',city:'Ile-Ife'},
+  {uni:'UI',st:'Radio UI',fr:'95.7 FM',city:'Ibadan'},{uni:'ABU',st:'BRTV Zaria',fr:'90.0 FM',city:'Zaria'},
+  {uni:'UNILORIN',st:'Unilorin FM',fr:'91.7 FM',city:'Ilorin'},{uni:'FUTA',st:'FUTAMEDIA',fr:'98.1 FM',city:'Akure'},
+];
+
+const EVENTS=[
+  {id:1,ttl:'Miss Campus Nigeria 2025',type:'Pageant',tc:'#FF2DAF',tb:'rgba(255,45,175,.15)',img:'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=700&q=80',dt:'Mar 15 — Apr 30, 2025',loc:'All Universities',pp:'47 nominees',desc:'The biggest inter-university beauty and intelligence pageant in Nigeria.',votes:[{l:'Chiamaka — UNILAG',p:34,c:'#008751'},{l:'Amara — UI',p:28,c:'#6B21A8'},{l:'Nneka — OAU',p:22,c:'#8B0000'},{l:'Others',p:16,c:'#7A6A9A'}]},
+  {id:2,ttl:'CampusVibe Inter-Uni Quiz Battle S2',type:'Quiz',tc:'#FFB800',tb:'rgba(255,184,0,.15)',img:'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?w=700&q=80',dt:'May 10, 2025',loc:'Online + Livestream',pp:'16 universities',desc:'General knowledge, tech, current affairs. 16 universities. One champion.',votes:[]},
+  {id:3,ttl:'Naija Debate Royale: "ASUU strikes have done more harm than good"',type:'Debate',tc:'#B026FF',tb:'rgba(176,38,255,.15)',img:'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=700&q=80',dt:'Apr 5, 2025',loc:'Univ. of Ibadan + Stream',pp:'8 universities',desc:'The most anticipated campus debate of the year. For and Against.',votes:[]},
+  {id:4,ttl:'Inter-Uni Football Championship 2025',type:'Sports',tc:'#00C853',tb:'rgba(0,200,83,.15)',img:'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=700&q=80',dt:'Jun 1 — Jul 20, 2025',loc:'Multiple Campuses',pp:'24 universities',desc:'Premier inter-university football. Group stages, knockouts, grand final.',votes:[]},
+];
+
+const BOOKS=[
+  {e:'📘',t:'Thinking, Fast and Slow',a:'Daniel Kahneman',d:'All Departments',tags:[{l:'Psychology',c:'#B026FF',b:'rgba(176,38,255,.1)'},{l:'Decision Making',c:'#00FFD1',b:'rgba(0,255,209,.1)'}]},
+  {e:'⚙️',t:'Structures: Why Things Don\'t Fall Down',a:'J.E. Gordon',d:'Engineering / Architecture',tags:[{l:'Engineering',c:'#EA580C',b:'rgba(234,88,12,.1)'},{l:'Architecture',c:'#FFB800',b:'rgba(255,184,0,.1)'}]},
+  {e:'💻',t:'Clean Code',a:'Robert C. Martin',d:'Computer Science',tags:[{l:'Programming',c:'#00FFD1',b:'rgba(0,255,209,.1)'},{l:'Software Eng',c:'#B026FF',b:'rgba(176,38,255,.1)'}]},
+  {e:'⚖️',t:'The Nigerian Legal System',a:'Ese Malemi',d:'Law',tags:[{l:'Nigerian Law',c:'#6B21A8',b:'rgba(107,33,168,.1)'},{l:'Jurisprudence',c:'#FFB800',b:'rgba(255,184,0,.1)'}]},
+  {e:'🧬',t:'Gray\'s Anatomy',a:'Henry Gray',d:'Medicine & Surgery',tags:[{l:'Anatomy',c:'#DC2626',b:'rgba(220,38,38,.1)'},{l:'Medicine',c:'#FF2DAF',b:'rgba(255,45,175,.1)'}]},
+  {e:'📊',t:'Principles of Economics',a:'N. Gregory Mankiw',d:'Economics',tags:[{l:'Economics',c:'#00C853',b:'rgba(0,200,83,.1)'},{l:'Finance',c:'#FFB800',b:'rgba(255,184,0,.1)'}]},
+  {e:'🏛️',t:'Architecture: Form, Space & Order',a:'Francis D.K. Ching',d:'Architecture',tags:[{l:'Architecture',c:'#FFB800',b:'rgba(255,184,0,.1)'},{l:'Design',c:'#FF2DAF',b:'rgba(255,45,175,.1)'}]},
+];
+
+const FACTS=[
+  {d:'Architecture',f:'Venice has been standing on wooden piles driven into the lagoon for over 1,000 years. Anaerobic conditions prevent the wood from rotting — a masterclass in knowing your environment before you build.'},
+  {d:'Civil Engineering',f:'Japan\'s base isolation technology allows entire buildings to float on bearings during earthquakes. It\'s why Tokyo survives what would destroy other cities. Damping, not rigidity, is the key.'},
+  {d:'Computer Science',f:'The first computer bug was an actual moth found in Harvard\'s Mark II computer in 1947. Grace Hopper\'s team literally debugged a machine. The word has stuck ever since.'},
+  {d:'Medicine & Surgery',f:'The human body has ~37 trillion cells — but you carry 38 trillion bacterial cells on and in you. By count, you are more bacteria than human. Think about that during your next microbiology lecture.'},
+  {d:'Law',f:'Nigeria has had six constitutions since independence in 1960. The current 1999 Constitution was drafted by a military government — which is why many scholars argue it lacks true democratic legitimacy.'},
+  {d:'Economics',f:'Nigeria\'s informal economy accounts for ~65% of GDP. More economic activity happens outside formal tracking than inside it — a fact most macro textbooks significantly undersell.'},
+];
+
+const MKTITEMS=[
+  {t:'Professional CV & Cover Letter Design',s:'Tunde Makanjuola · UNILAG, 400L',p:'₦3,500',img:'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400&q=80',c:'Design'},
+  {t:'Mathematics & Stats Tutoring',s:'Emeka Obi · UI, 500L',p:'₦8,000/mo',img:'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&q=80',c:'Tutoring'},
+  {t:'Web Design — Portfolios & Business Sites',s:'Fatima Abubakar · ABU, 300L',p:'₦25,000',img:'https://images.unsplash.com/photo-1547658719-da2b51169166?w=400&q=80',c:'Tech'},
+  {t:'Event Photography — Campus & Portraits',s:'Chidi Nwosu · OAU, 400L',p:'₦15,000/event',img:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80',c:'Creative'},
+];
+
+const SDATA=[
+  {tp:'Student',tc:'#B026FF',tb:'rgba(176,38,255,.12)',n:'Chiamaka Obi',s:'Mass Comm · UNILAG · 400L'},
+  {tp:'Student',tc:'#B026FF',tb:'rgba(176,38,255,.12)',n:'Tobi Adeyemi',s:'Computer Science · OAU · 300L'},
+  {tp:'University',tc:'#00FFD1',tb:'rgba(0,255,209,.12)',n:'UNILAG — University of Lagos',s:'Lagos · 50,000+ students'},
+  {tp:'University',tc:'#00FFD1',tb:'rgba(0,255,209,.12)',n:'OAU — Obafemi Awolowo University',s:'Osun State · 35,000+ students'},
+  {tp:'Event',tc:'#FFB800',tb:'rgba(255,184,0,.12)',n:'Miss Campus Nigeria 2025',s:'Pageant · Nominations open'},
+  {tp:'Scholarship',tc:'#FF2DAF',tb:'rgba(255,45,175,.12)',n:'Dangote Future Leaders Scholarship',s:'₦2.5M/year · Deadline May 30'},
+  {tp:'Hashtag',tc:'#7A6A9A',tb:'rgba(122,106,154,.12)',n:'#ExamSzn',s:'14.2k posts this week'},
+  {tp:'Hashtag',tc:'#7A6A9A',tb:'rgba(122,106,154,.12)',n:'#ASUU2025',s:'9.8k posts this week'},
+];
+
+const NOTIFS=[
+  {ic:'❤️',c:'#FF2DAF',tx:'Chiamaka Obi liked your post about exam season',t:'2m ago'},
+  {ic:'💬',c:'#B026FF',tx:'Tobi Adeyemi commented: "Same energy in OAU bro 😭"',t:'5m ago'},
+  {ic:'🔔',c:'#FFB800',tx:'New scholarship: Dangote Future Leaders 2025 — Deadline May 30',t:'12m ago'},
+  {ic:'🔁',c:'#00FFD1',tx:'Your post was reposted by 3 students',t:'18m ago'},
+  {ic:'📰',c:'#FF3B30',tx:'BREAKING: ASUU issues 21-day warning strike notice',t:'2h ago'},
+  {ic:'🏆',c:'#FFB800',tx:'Miss Campus 2025 nominations are open — nominate your queen!',t:'3h ago'},
+  {ic:'👤',c:'#B026FF',tx:'Ngozi Eze started following you',t:'5h ago'},
+  {ic:'🎓',c:'#00FFD1',tx:'A new scholarship matches your academic profile',t:'1d ago'},
+];
+
+/* ════════════════════════════════════════
+   STATE
+════════════════════════════════════════ */
+let curPage='home', feedTab='For You';
+let pLikes={}, pLiked={}, pComs={};
+let posts=[...POSTS], moreLoaded=false, factI=0, selUni='';
+
+/* ════════════════════════════════════════
+   UTILS
+════════════════════════════════════════ */
+const fmt=n=>n>=1000?(n/1000).toFixed(1)+'k':String(n);
+const uc=u=>UNIS[u]?.c||'#B026FF';
+const ubs=u=>{const d=UNIS[u];return d?`background:${d.c}22;color:${d.c};border:1px solid ${d.c}55;`:''};
+
+function showT(msg,tp=''){
+  const w=document.getElementById('toasts');
+  const t=document.createElement('div');
+  t.className='toast'+(tp?' '+tp:'');
+  t.textContent=msg;
+  w.appendChild(t);
+  setTimeout(()=>{t.style.animation='fadeOut .3s ease forwards';setTimeout(()=>t.remove(),300);},2700);
+}
+function openM(id){document.getElementById(id).classList.add('on');document.body.style.overflow='hidden';}
+function closeM(id){document.getElementById(id).classList.remove('on');document.body.style.overflow='';}
+
+/* ════════════════════════════════════════
+   LOADER
+════════════════════════════════════════ */
+function startLoader(){
+  // Ticker
+  const unis=Object.entries(UNIS);
+  let h='';
+  for(let i=0;i<2;i++) unis.forEach(([a,u])=>{
+    h+=`<span class="l-tick"><span class="l-tick-dot" style="background:${u.c};box-shadow:0 0 5px ${u.c}"></span>${a} — ${u.f}</span>`;
+  });
+  document.getElementById('ltick').innerHTML=h;
+
+  // Facts cycle
+  let fi=0;
+  const ft=document.getElementById('ftxt'), fl=document.getElementById('flbl');
+  const cycleFact=()=>{
+    fi=(fi+1)%LFACTS.length;
+    ft.style.opacity='0'; ft.style.transform='translateY(8px)';
+    setTimeout(()=>{
+      fl.textContent=LFACTS[fi].l;
+      ft.innerHTML=LFACTS[fi].t+'<span class="l-cursor"></span>';
+      ft.style.transition='opacity .35s,transform .35s';
+      ft.style.opacity='1'; ft.style.transform='translateY(0)';
+    },280);
+  };
+  const fInt=setInterval(cycleFact,2500);
+
+  // Progress
+  const bar=document.getElementById('lbar');
+  const lbl=document.getElementById('llbl');
+  const pct=document.getElementById('lpct');
+  const note=document.getElementById('lnote');
+  let si=0;
+  const doStep=()=>{
+    if(si>=LSTEPS.length){
+      clearInterval(fInt);
+      note.textContent='🎉 You\'re in! Entering...';
+      note.style.color='var(--neon2)';
+      setTimeout(exitLoader,700);
+      return;
+    }
+    const s=LSTEPS[si];
+    bar.style.width=s.p+'%'; lbl.textContent=s.l; pct.textContent=s.p+'%';
+    si++; setTimeout(doStep,360+Math.random()*240);
+  };
+  setTimeout(doStep,500);
+
+  // Particles
+  const emj=['🎓','📚','✏️','🏫','🎉','⚡','🔥','🏆','💡','🌍','📱','🎵'];
+  const ldr=document.getElementById('loader');
+  const pInt=setInterval(()=>{
+    if(ldr.classList.contains('out')){clearInterval(pInt);return;}
+    const e=document.createElement('div');
+    e.className='l-particle';
+    e.textContent=emj[Math.floor(Math.random()*emj.length)];
+    e.style.left=(6+Math.random()*88)+'%';
+    e.style.bottom=(5+Math.random()*40)+'%';
+    e.style.animationDuration=(2.2+Math.random()*1.8)+'s';
+    ldr.appendChild(e);
+    setTimeout(()=>e.remove(),4000);
+  },900);
+}
+
+function exitLoader(){
+  const ldr=document.getElementById('loader');
+  const app=document.getElementById('app');
+  ldr.classList.add('out');
+  setTimeout(()=>{
+    ldr.style.display='none';
+    app.classList.add('on');
+    initApp();
+  },800);
+}
+
+/* ════════════════════════════════════════
+   APP INIT
+════════════════════════════════════════ */
+function initApp(){
+  buildLeftNav(); buildMobNav(); buildRside();
+  buildStories(); buildFeedTabs(); renderPosts();
+  buildEvtTabs(); buildEvts();
+  buildSchols(); buildNews(); buildLib(); buildMkt();
+  buildProfile(); buildExplore(); buildMsgs(); buildAlumni();
+  window.addEventListener('scroll',onScroll,{passive:true});
+  setTimeout(()=>document.getElementById('rrow').classList.add('on'),50000);
+}
+
+/* ════════════════════════════════════════
+   NAVIGATION
+════════════════════════════════════════ */
+function goTo(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  curPage=id;
+  document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('on',n.dataset.p===id));
+  document.querySelectorAll('.mn-item').forEach(n=>n.classList.toggle('on',n.dataset.p===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function onScroll(){document.getElementById('topbar').classList.toggle('scrolled',window.scrollY>20);}
+
+/* ════════════════════════════════════════
+   LEFT NAV
+════════════════════════════════════════ */
+function buildLeftNav(){
+  let h='',ls='';
+  NAVITEMS.forEach(it=>{
+    if(it.sec&&it.sec!==ls){h+=`<div class="ns-lbl">${it.sec}</div>`;ls=it.sec;}
+    const b=it.badge?`<span class="ni-badge">${it.badge}</span>`:'';
+    h+=`<div class="ni${it.id===curPage?' on':''}" data-p="${it.id}" onclick="goTo('${it.id}')">
+      <span class="ni-ic">${it.ic}</span><span>${it.lb}</span>${b}
+    </div>`;
+  });
+  document.getElementById('leftNav').innerHTML=h;
+}
+function buildMobNav(){
+  document.getElementById('mobnav').innerHTML=MOBNAV.map(m=>`
+    <div class="mn-item${m.id===curPage?' on':''}" data-p="${m.id}" onclick="goTo('${m.id}')">
+      <span class="ic">${m.ic}</span><span class="lb">${m.lb}</span>
+    </div>`).join('');
+}
+
+/* ════════════════════════════════════════
+   RIGHT SIDEBAR
+════════════════════════════════════════ */
+function buildRside(){
+  const trends=['#ExamSzn','#ASUU2025','#MissCampus2025','#FreshersWeek','#CampusCouple','#NijaStudent'];
+  const tr=trends.map((tg,i)=>`<div class="titem" onclick="showT('Viewing ${tg}')"><div class="ttag">${tg}</div><div class="tcnt">${[14.2,9.8,7.3,5.1,3.9,2.4][i]}k posts</div></div>`).join('');
+  const ur=Object.entries(UNIS).slice(0,7).map(([a,u])=>`<div class="urow" onclick="showT('Exploring ${a}...')"><div class="udot" style="background:${u.c};box-shadow:0 0 6px ${u.c}"></div><span class="uname">${a}</span><span class="ucnt">${Math.floor(Math.random()*900+100)}</span></div>`).join('');
+  document.getElementById('rside').innerHTML=`
+    <div style="background:linear-gradient(135deg,rgba(176,38,255,.2),rgba(255,45,175,.14));border:1px solid rgba(176,38,255,.35);border-radius:var(--rl);padding:15px;margin-bottom:12px;text-align:center;">
+      <div style="font-size:26px;margin-bottom:7px;">👑</div>
+      <div style="font-family:var(--fhead);font-size:14px;font-weight:800;margin-bottom:5px;">Miss Campus 2025</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:11px;">Nominations open. Vote for your queen.</div>
+      <button class="btn bp bsm bfull" onclick="goTo('events')">Nominate Now →</button>
+    </div>
+    <div class="wgt"><div class="wgt-ttl">🔥 Trending <span class="wgt-lnk" onclick="goTo('explore')">See all</span></div>${tr}</div>
+    <div class="wgt"><div class="wgt-ttl">🏫 Live Now</div>${ur}</div>
+    <div class="wgt" style="background:linear-gradient(135deg,rgba(0,255,209,.07),rgba(176,38,255,.05));border-color:rgba(0,255,209,.18);">
+      <div class="wgt-ttl">🎓 Scholarship Alert</div>
+      <div style="font-size:13px;color:var(--text2);margin-bottom:9px;line-height:1.5;">Dangote Foundation: <strong style="color:var(--neon2);">₦2.5M/year</strong> — Deadline May 30</div>
+      <button class="btn bt bsm bfull" onclick="goTo('scholarships')">View All Scholarships</button>
+    </div>`;
+}
+
+/* ════════════════════════════════════════
+   STORIES
+════════════════════════════════════════ */
+function buildStories(){
+  const sts=[
+    {uni:'OAU',e:'😎'},{uni:'UI',e:'👩',seen:false},{uni:'LASU',e:'🧑',seen:true},
+    {uni:'ABU',e:'👩'},{uni:'FUTA',e:'🧔',seen:true},{uni:'UNILORIN',e:'👩'},
+  ];
+  document.getElementById('storiesRow').innerHTML=`
+    <div class="sb">
+      <div class="sb-add" onclick="showT('📸 Add your story!')">📸<div class="sb-plus">+</div></div>
+      <span class="sb-lbl">Add Story</span>
+    </div>
+    ${sts.map(s=>`<div class="sb" onclick="openStory('${s.uni}','${s.e}')">
+      <div class="sb-ring ${s.seen?'seen':'new'}">
+        <div class="sb-inner" style="background:${uc(s.uni)}22;">${s.e}</div>
+      </div>
+      <span class="sb-lbl">${s.uni}</span>
+    </div>`).join('')}`;
+}
+
+function openStory(uni,emoji){
+  const u=UNIS[uni];
+  document.getElementById('storyMT').textContent=`${uni} Story`;
+  document.getElementById('storyMB').innerHTML=`<div style="text-align:center;padding:18px 0;">
+    <div style="font-size:58px;margin-bottom:14px;">${emoji}</div>
+    <div style="font-family:var(--fhead);font-size:16px;font-weight:800;margin-bottom:5px;">${uni} — ${u?.f||uni}</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:18px;">Story from a ${uni} student</div>
+    <div style="padding:14px;background:${uc(uni)}22;border:1px solid ${uc(uni)}44;border-radius:var(--r);">
+      <div style="font-size:14px;color:var(--text2);line-height:1.65;">"Campus life is beautiful. The struggles make the degree worthwhile. ${uni} forever! 💪"</div>
+    </div>
+  </div>`;
+  openM('storyM');
+}
+
+/* ════════════════════════════════════════
+   FEED TABS
+════════════════════════════════════════ */
+function buildFeedTabs(){
+  const tabs=['For You','My Uni','All Unis','Events','Trending'];
+  document.getElementById('feedTabs').innerHTML=tabs.map(t=>`<button class="ftab${t===feedTab?' on':''}" onclick="setTab('${t}')">${t}</button>`).join('');
+}
+function setTab(t){feedTab=t;buildFeedTabs();renderPosts();showT('Showing: '+t);}
+
+/* ════════════════════════════════════════
+   POSTS
+════════════════════════════════════════ */
+function renderPosts(){
+  posts.forEach(p=>{
+    if(pLikes[p.id]===undefined){pLikes[p.id]=p.lk;pLiked[p.id]=p.liked;}
+  });
+  document.getElementById('postsWrap').innerHTML=posts.map((p,i)=>buildPost(p,i)).join('');
+}
+
+function buildPost(p,i){
+  const isOff=p.isOff;
+  const pc=uc(p.uni);
+  const tbar={
+    event:`<div class="ptbar" style="background:linear-gradient(90deg,rgba(176,38,255,.2),rgba(255,45,175,.12));color:var(--neon);">⚡ OFFICIAL EVENT — CAMPUSVIBE</div>`,
+    announce:`<div class="ptbar" style="background:rgba(0,255,209,.08);color:var(--neon2);">📢 ANNOUNCEMENT</div>`,
+    exec:`<div class="ptbar" style="background:rgba(255,184,0,.09);color:var(--gold);">🏛️ STUDENT UNION OFFICIAL</div>`,
+    normal:'',
+  }[p.type]||'';
+
+  const cc=p.type==='event'?' ev':p.type==='announce'?' an':p.type==='exec'?' ex':'';
+  const unib=p.uni&&p.uni!=='ALL'?`<span class="ubadge" style="${ubs(p.uni)}">${p.uni}</span>`:'';
+  const lvb=p.level?`<span class="lvbadge">${p.level}</span>`:'';
+  const exb=p.exec?`<span class="exbadge">🏛️ ${p.execT}</span>`:'';
+  const vb=p.ver?`<span class="vbadge">✓</span>`:'';
+  const av=isOff
+    ?`<div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--neon3));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;border:2px solid var(--neon);box-shadow:0 0 14px rgba(176,38,255,.5);flex-shrink:0;font-family:var(--fhead);">CV</div>`
+    :`<div style="width:44px;height:44px;border-radius:50%;background:${pc}22;border:2px solid ${pc}99;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:${pc};flex-shrink:0;font-family:var(--fhead);">${p.ini}</div>`;
+
+  const lk=pLiked[p.id]; const lc=pLikes[p.id];
+  const tags=p.tags?`<div class="ptags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div>`:'';
+  const imgH=p.img?`<div class="pimgwrap"><img class="pimg" src="${p.img}" alt="" loading="lazy"/>${p.type==='event'?`<button class="p-ev-cta" onclick="event.stopPropagation();goTo('events')">Join Event →</button>`:''}</div>`:'';
+  const hall=p.hall?`<div class="phall">🏠 ${p.hall}</div>`:'';
+  const open=pComs[p.id];
+
+  const coms=[
+    {ini:'TO',n:'Tobi — OAU',tx:'Same energy here bro 😭 Last night I slept in the faculty library'},
+    {ini:'NE',n:'Ngozi — UI',tx:'Nigerian students are built different. We survive everything 💪'},
+  ];
+
+  return `<div class="pcard${cc}" style="animation-delay:${i*0.06}s;">
+    ${tbar}
+    <div class="phdr">
+      <div class="pmeta">
+        ${av}
+        <div class="puinfo">
+          <div class="pnrow">${`<span class="pname">${p.user}</span>`}${vb}${unib}${lvb}${exb}</div>
+          <div class="psrow">
+            <span class="phandle">${p.handle}</span>
+            ${p.dept?`<span class="ptime">· ${p.dept}</span>`:''}
+            <span class="ptime">· ${p.t}</span>
+          </div>
+          ${hall}
+        </div>
+        <button style="width:32px;height:32px;border-radius:7px;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--muted);" onclick="showT('Options coming soon!')">⋯</button>
+      </div>
+    </div>
+    <div class="pbody">${p.txt}</div>
+    ${tags}${imgH}
+    <div class="pacts">
+      <button class="ab${lk?' lk':''}" id="lbtn-${p.id}" onclick="doLike(${p.id})">
+        ${lk?'❤️':'🤍'} <span id="lcnt-${p.id}">${fmt(lc)}</span>
+      </button>
+      <button class="ab${open?' cm':''}" onclick="togCom(${p.id})">
+        💬 <span>${fmt(p.cm)}</span>
+      </button>
+      <button class="ab${pLiked['r'+p.id]?' rp':''}" onclick="doRp(${p.id})">
+        🔁 <span id="rp-${p.id}">${fmt(p.rp)}</span>
+      </button>
+      <button class="ab" onclick="showT('📤 Share coming soon!')">📤</button>
+    </div>
+    <div class="czone${open?' on':''}" id="cz-${p.id}">
+      <div class="ccompose">
+        <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--neon3));flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;">B</div>
+        <div class="cinwrap">
+          <input class="cin" placeholder="Drop your vibe..." id="ci-${p.id}"/>
+          <button class="csend" onclick="postCom(${p.id})">Send</button>
+        </div>
+      </div>
+      <div class="clist" id="cl-${p.id}">
+        ${coms.map(c=>`<div class="citem">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--card3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;color:var(--muted);">${c.ini}</div>
+          <div class="cbbl"><div class="cauth">${c.n}</div><div class="ctxt">${c.tx}</div>
+            <div class="cacts"><span class="cact" onclick="showT('❤️ Liked!')">❤️ Like</span><span class="cact" onclick="showT('Reply coming soon!')">↩ Reply</span></div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function doLike(id){
+  pLiked[id]=!pLiked[id]; pLikes[id]+=pLiked[id]?1:-1;
+  const btn=document.getElementById('lbtn-'+id);
+  const cnt=document.getElementById('lcnt-'+id);
+  if(btn){
+    btn.className='ab'+(pLiked[id]?' lk':'');
+    btn.innerHTML=`${pLiked[id]?'❤️':'🤍'} <span id="lcnt-${id}">${fmt(pLikes[id])}</span>`;
+    if(pLiked[id]){btn.style.animation='heartPop .35s ease';setTimeout(()=>{if(btn)btn.style.animation='';},400);}
+  }
+}
+function doRp(id){
+  pLiked['r'+id]=!pLiked['r'+id];
+  showT(pLiked['r'+id]?'🔁 Reposted!':'↩ Repost removed');
+  const el=document.getElementById('rp-'+id);
+  const p=posts.find(x=>x.id===id);
+  if(el&&p) el.textContent=fmt(p.rp+(pLiked['r'+id]?1:0));
+}
+function togCom(id){
+  pComs[id]=!pComs[id];
+  const z=document.getElementById('cz-'+id);
+  if(z) z.classList.toggle('on',pComs[id]);
+}
+function postCom(id){
+  const inp=document.getElementById('ci-'+id);
+  if(!inp?.value.trim()){showT('Write something first!','err');return;}
+  const list=document.getElementById('cl-'+id);
+  const d=document.createElement('div');
+  d.className='citem';
+  d.innerHTML=`<div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--neon3));flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#fff;">B</div>
+    <div class="cbbl"><div class="cauth">Buhari Mohammed</div><div class="ctxt">${inp.value}</div>
+      <div class="cacts"><span class="cact">❤️ Like</span><span class="cact">↩ Reply</span></div>
+    </div>`;
+  list.appendChild(d); inp.value=''; showT('✅ Comment posted!','ok');
+}
+function refreshFeed(){
+  document.getElementById('rrow').classList.remove('on');
+  const np={id:Date.now(),user:'CampusVibe Live',handle:'@cv_live',uni:'ALL',ini:'LU',ver:true,isOff:true,t:'just now',txt:'🔴 LIVE: 3 new universities just joined CampusVibe! Welcome UNIPORT, FUNAAB and EKSU students to the network. The family grows 🚀',img:null,tags:['#NewUnis','#CampusVibe'],type:'announce',lk:0,cm:0,rp:0,liked:false};
+  posts.unshift(np); pLikes[np.id]=0; pLiked[np.id]=false;
+  renderPosts(); showT('✨ Feed refreshed!','ok');
+}
+function loadMore(){
+  if(moreLoaded){showT('You\'re all caught up! 🎉');return;}
+  MPOSTS.forEach(p=>{if(!posts.find(x=>x.id===p.id)){posts.push(p);pLikes[p.id]=p.lk;pLiked[p.id]=p.liked;}});
+  moreLoaded=true; renderPosts();
+  const b=document.getElementById('lmBtn'); b.textContent="You're all caught up 🎉"; b.disabled=true;
+}
+function postSubmit(){
+  const ta=document.getElementById('cta');
+  if(!ta.value.trim()){showT('Write something first!','err');return;}
+  const np={id:Date.now(),user:'Buhari Mohammed',handle:'@buhari_cv',uni:'UNILAG',dept:'Law',level:'400L',hall:'Independence Hall',ini:'BM',ver:true,exec:false,t:'just now',txt:ta.value,img:null,tags:[],type:'normal',lk:0,cm:0,rp:0,liked:false};
+  posts.unshift(np); pLikes[np.id]=0; pLiked[np.id]=false;
+  ta.value=''; composeOff(true); renderPosts(); showT('✅ Posted!','ok');
+}
+function composeOn(){
+  document.getElementById('compose').classList.add('act');
+  document.getElementById('ctoolbar').style.display='flex';
+}
+function composeOff(force=false){
+  const ta=document.getElementById('cta');
+  if(!ta.value.trim()||force){
+    document.getElementById('compose').classList.remove('act');
+    document.getElementById('ctoolbar').style.display='none';
+  }
+}
+
+/* ════════════════════════════════════════
+   EVENTS
+════════════════════════════════════════ */
+function buildEvtTabs(){
+  const tabs=['All','Pageants','Quizzes','Debates','Sports'];
+  document.getElementById('evtTabs').innerHTML=tabs.map(t=>`<button class="ftab${t==='All'?' on':''}" onclick="setEvtTab('${t}')">${t}</button>`).join('');
+}
+function setEvtTab(t){
+  document.querySelectorAll('#evtTabs .ftab').forEach(b=>b.classList.toggle('on',b.textContent===t));
+  buildEvts(t);
+}
+function buildEvts(f='All'){
+  const fl=f==='All'?EVENTS:EVENTS.filter(e=>e.type===f.slice(0,-1)||e.type===f);
+  document.getElementById('evtWrap').innerHTML=fl.map((e,i)=>{
+    const vs=e.votes.length?`<div style="margin-top:13px;"><div style="font-size:10px;font-family:var(--fmono);color:var(--muted);margin-bottom:7px;letter-spacing:.5px;">LIVE VOTE STANDINGS</div>${e.votes.map(v=>`<div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-family:var(--fmono);margin-bottom:3px;"><span>${v.l}</span><span style="font-weight:700;color:var(--text);">${v.p}%</span></div><div style="height:5px;background:var(--card2);border-radius:3px;overflow:hidden;"><div style="height:100%;width:${v.p}%;background:${v.c};border-radius:3px;box-shadow:0 0 8px ${v.c}77;"></div></div></div>`).join('')}</div>`:'';
+    return `<div class="ecard" style="animation-delay:${i*.08}s;">
+      <img class="eimg" src="${e.img}" alt="" loading="lazy"/>
+      <div class="ebody">
+        <div style="display:inline-flex;align-items:center;background:${e.tb};color:${e.tc};border-radius:6px;padding:3px 10px;font-size:10px;font-weight:700;font-family:var(--fmono);margin-bottom:8px;">${e.type}</div>
+        <div class="ettl">${e.ttl}</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.55;margin-bottom:9px;">${e.desc}</div>
+        <div class="emeta"><span>📅 ${e.dt}</span><span>📍 ${e.loc}</span></div>
+        ${vs}
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:11px;padding-top:11px;border-top:1px solid var(--border);">
+          <span style="font-size:12px;color:var(--muted);">👥 ${e.pp}</span>
+          <button class="btn bp bsm" onclick="event.stopPropagation();showT('Joining ${e.type}...')">Join Now →</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('')||`<div style="text-align:center;padding:40px;color:var(--muted);">No ${f} events right now.</div>`;
+}
+
+/* ════════════════════════════════════════
+   SCHOLARSHIPS
+════════════════════════════════════════ */
+function buildSchols(){
+  const tabs=['All','STEM','Law','Business','Medicine'];
+  document.getElementById('scholTabs').innerHTML=tabs.map(t=>`<button class="ftab${t==='All'?' on':''}" onclick="document.querySelectorAll('#scholTabs .ftab').forEach(b=>b.classList.toggle('on',b.textContent==='${t}'));showT('Showing: ${t} scholarships')">${t}</button>`).join('');
+  document.getElementById('scholWrap').innerHTML=SCHOLS.map((s,i)=>`
+    <div class="scrd${s.ft?' ft':''}" style="animation-delay:${i*.07}s;">
+      ${s.ft?`<div style="margin-bottom:9px;"><span style="font-size:10px;font-family:var(--fmono);font-weight:700;color:var(--gold);background:rgba(255,184,0,.1);border:1px solid rgba(255,184,0,.25);padding:2px 8px;border-radius:5px;">⭐ FEATURED</span></div>`:''}
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:11px;">
+        <div class="s-org-logo">${s.oi}</div>
+        <div><div style="font-weight:700;font-size:13px;font-family:var(--fhead);">${s.org}</div><div style="font-size:11px;color:var(--muted);">${s.ot}</div></div>
+      </div>
+      <div class="s-ttl">${s.ttl}</div>
+      <div class="s-desc">${s.desc}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px;">${s.tags.map(t=>`<span style="background:${t.b};color:${t.c};border:1px solid ${t.c}44;border-radius:5px;padding:2px 8px;font-size:10px;font-weight:700;font-family:var(--fmono);">${t.l}</span>`).join('')}</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:11px;">🏫 ${s.unis} &nbsp;·&nbsp; 📚 ${s.lv}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div><div class="s-amt">${s.amt}</div><div class="s-dl">Deadline: ${s.dl}</div></div>
+        <button class="btn bp bsm" onclick="event.stopPropagation();showT('Opening application...')">Apply Now →</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ════════════════════════════════════════
+   NEWS
+════════════════════════════════════════ */
+function buildNews(){
+  const tabs=['All News','ASUU','Policy','Student Rights'];
+  document.getElementById('newsTabs').innerHTML=tabs.map(t=>`<button class="ftab${t==='All News'?' on':''}" onclick="document.querySelectorAll('#newsTabs .ftab').forEach(b=>b.classList.toggle('on',b.textContent==='${t}'));showT('Showing: ${t}')">${t}</button>`).join('');
+  const rH=`<div class="wgt" style="margin-bottom:14px;"><div class="wgt-ttl">📻 University Radio Stations</div>
+    ${RADIO.map(r=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);">
+      <div><div style="font-size:13px;font-weight:600;">${r.st}</div><div style="font-size:11px;color:var(--muted);">${r.uni} · ${r.city}</div></div>
+      <span style="font-family:var(--fmono);font-size:12px;font-weight:700;color:var(--neon2);">${r.fr}</span>
+    </div>`).join('')}
+  </div>`;
+  const nH=NEWS.map((n,i)=>`<div class="nitem" style="animation-delay:${i*.06}s;" onclick="showT('Reading news...')">
+    <img class="nimg" src="${n.img}" alt="" loading="lazy"/>
+    <div style="flex:1;min-width:0;">
+      ${n.urg?`<div style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,59,48,.1);border:1px solid rgba(255,59,48,.25);border-radius:4px;padding:2px 6px;font-size:9px;font-weight:700;color:var(--red);font-family:var(--fmono);margin-bottom:4px;">🔴 BREAKING</div>`:''}
+      <div class="nsrc">${n.src}</div>
+      <div class="nttl">${n.ttl}</div>
+      <div class="ntm">⏱ ${n.t}</div>
+    </div>
+  </div>`).join('');
+  document.getElementById('newsWrap').innerHTML=rH+`<div class="wgt"><div class="wgt-ttl">📰 Latest Education News</div>${nH}</div>`;
+}
+
+/* ════════════════════════════════════════
+   LIBRARY
+════════════════════════════════════════ */
+function buildLib(){
+  const depts=['All Depts','Engineering','Medicine','Law','Computer Science','Economics','Architecture'];
+  const fb=`<div class="fact-box" id="factBox">
+    <div style="font-size:9px;font-family:var(--fmono);font-weight:700;color:var(--neon);margin-bottom:9px;letter-spacing:.8px;" id="fbLbl">💡 KNOWLEDGE PULSE — ${FACTS[0].d.toUpperCase()}</div>
+    <div class="fact-txt" id="fbTxt">"${FACTS[0].f}"</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <span class="fact-dept" id="fbDept">${FACTS[0].d}</span>
+      <button class="btn bo bsm" onclick="nextFact()">Next fact →</button>
+    </div>
+  </div>`;
+  const ft=`<div class="ftabs">${depts.map(d=>`<button class="ftab${d==='All Depts'?' on':''}" onclick="document.querySelectorAll('#pg-library .ftabs .ftab').forEach(b=>b.classList.toggle('on',b.textContent==='${d}'));showT('Filtering: ${d}')">${d}</button>`).join('')}</div>`;
+  const bks=BOOKS.map((b,i)=>`<div class="bcard" style="animation-delay:${i*.05}s;" onclick="showT('Finding: ${b.t}')">
+    <div class="bcover">${b.e}</div>
+    <div style="flex:1;min-width:0;">
+      <div class="bttl">${b.t}</div>
+      <div class="bauth">${b.a} · ${b.d}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;">${b.tags.map(t=>`<span style="background:${t.b};color:${t.c};border:1px solid ${t.c}44;border-radius:4px;padding:2px 6px;font-size:9px;font-weight:700;font-family:var(--fmono);">${t.l}</span>`).join('')}</div>
+    </div>
+    <button class="btn bt bsm" style="flex-shrink:0;" onclick="event.stopPropagation();showT('📖 Fetching book link...')">Get Book</button>
+  </div>`).join('');
+  document.getElementById('libWrap').innerHTML=fb+ft+bks;
+}
+function nextFact(){
+  factI=(factI+1)%FACTS.length;
+  const f=FACTS[factI];
+  const box=document.getElementById('factBox');
+  if(!box)return;
+  box.style.opacity='0'; box.style.transform='scale(.97)';
+  setTimeout(()=>{
+    document.getElementById('fbLbl').textContent=`💡 KNOWLEDGE PULSE — ${f.d.toUpperCase()}`;
+    document.getElementById('fbTxt').textContent=`"${f.f}"`;
+    document.getElementById('fbDept').textContent=f.d;
+    box.style.transition='all .3s ease'; box.style.opacity='1'; box.style.transform='scale(1)';
+  },240);
+}
+
+/* ════════════════════════════════════════
+   MARKETPLACE
+════════════════════════════════════════ */
+function buildMkt(){
+  const tabs=['All','Design','Tutoring','Tech','Creative','Jobs'];
+  document.getElementById('mktTabs').innerHTML=tabs.map(t=>`<button class="ftab${t==='All'?' on':''}" onclick="document.querySelectorAll('#mktTabs .ftab').forEach(b=>b.classList.toggle('on',b.textContent==='${t}'));showT('Filtering: ${t}')">${t}</button>`).join('');
+  document.getElementById('mktWrap').innerHTML=`
+    <div class="mgrid">
+      ${MKTITEMS.map((m,i)=>`<div class="mcard" style="animation-delay:${i*.07}s;">
+        <img class="mimg" src="${m.img}" alt="" loading="lazy"/>
+        <div class="mbody">
+          <div style="font-size:9px;font-family:var(--fmono);font-weight:700;color:var(--neon);margin-bottom:4px;">${m.c.toUpperCase()}</div>
+          <div style="font-weight:700;font-size:13px;margin-bottom:3px;font-family:var(--fhead);">${m.t}</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:7px;">${m.s}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span class="mprice">${m.p}</span>
+            <button class="btn bp bsm" onclick="event.stopPropagation();showT('Contacting seller...')">Hire</button>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div style="margin-top:14px;"><button class="btn bo bfull" onclick="showT('List service — coming soon!')">+ List Your Service</button></div>`;
+}
+
+/* ════════════════════════════════════════
+   PROFILE
+════════════════════════════════════════ */
+function buildProfile(){
+  document.getElementById('profWrap').innerHTML=`
+    <div class="prof-hero">
+      <div class="prof-cover"><div class="prof-av-wrap"><div class="prof-av">B</div></div></div>
+      <div class="prof-body">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:9px;margin-bottom:11px;">
+          <div><div class="prof-name">Buhari Mohammed</div><div class="prof-handle">@buhari_cv</div></div>
+          <button class="btn bo bsm" onclick="showT('Edit profile — coming soon!')">Edit Profile</button>
+        </div>
+        <div class="prof-bio">Law student by day, platform architect by night. Building the future of Nigerian campus life. 🚀 Lagos, Nigeria 📍</div>
+        <div class="prof-tags">
+          <span class="ubadge" style="background:rgba(0,135,81,.2);color:#008751;border:1px solid rgba(0,135,81,.35);">UNILAG</span>
+          <span class="lvbadge">400L</span>
+          <span style="background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:10px;font-family:var(--fmono);">Law</span>
+          <span style="background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:10px;font-family:var(--fmono);">🏠 Independence Hall</span>
+          <span class="vbadge">✓</span>
+        </div>
+      </div>
+      <div class="prof-stats">
+        <div class="pstat" onclick="showT('Viewing posts...')"><div class="pstat-n">24</div><div class="pstat-l">Posts</div></div>
+        <div class="pstat" onclick="showT('Viewing followers...')"><div class="pstat-n">1.2k</div><div class="pstat-l">Followers</div></div>
+        <div class="pstat" onclick="showT('Viewing following...')"><div class="pstat-n">340</div><div class="pstat-l">Following</div></div>
+      </div>
+    </div>
+    <div class="ftabs">${['Posts','Reposts','Likes','Media'].map(t=>`<button class="ftab${t==='Posts'?' on':''}" onclick="document.querySelectorAll('#pg-profile .ftabs .ftab').forEach(b=>b.classList.toggle('on',b.textContent==='${t}'));showT('Viewing ${t}...')">${t}</button>`).join('')}</div>
+    ${[POSTS[0],POSTS[5]].map((p,i)=>buildPost(p,i)).join('')}`;
+}
+
+/* ════════════════════════════════════════
+   EXPLORE
+════════════════════════════════════════ */
+function buildExplore(){
+  const uc_grid=Object.entries(UNIS).map(([a,u])=>`
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:13px;cursor:pointer;transition:all .2s;"
+      onclick="showT('Exploring ${a}...')"
+      onmouseover="this.style.borderColor='${u.c}';this.style.boxShadow='0 0 16px ${u.c}33'"
+      onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'">
+      <div style="width:28px;height:28px;border-radius:7px;background:${u.c}22;border:1px solid ${u.c}44;display:flex;align-items:center;justify-content:center;margin-bottom:7px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:${u.c};box-shadow:0 0 5px ${u.c};"></div>
+      </div>
+      <div style="font-weight:700;font-size:12px;font-family:var(--fhead);">${a}</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3;">${u.f}</div>
+    </div>`).join('');
+  document.getElementById('explorePg').innerHTML=`
+    <div style="margin-bottom:18px;">
+      <div style="font-family:var(--fhead);font-size:16px;font-weight:800;margin-bottom:11px;">🏫 Browse Universities</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px;">${uc_grid}</div>
+    </div>
+    <div style="height:1px;background:var(--border);margin:18px 0;"></div>
+    <div style="font-family:var(--fhead);font-size:16px;font-weight:800;margin-bottom:13px;">🔥 Trending Students</div>
+    ${POSTS.slice(0,3).map(p=>{const pc=uc(p.uni);return `<div style="display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="showT('Viewing profile...')">
+      <div style="width:40px;height:40px;border-radius:50%;background:${pc}22;border:2px solid ${pc}88;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:${pc};font-family:var(--fhead);">${p.ini}</div>
+      <div style="flex:1;"><div style="font-weight:700;font-size:13px;">${p.user}</div><div style="font-size:11px;color:var(--muted);">${p.handle} · ${p.uni} · ${p.level||''}</div></div>
+      <button class="btn bo bsm" onclick="event.stopPropagation();showT('Following ${p.user}...')">Follow</button>
+    </div>`;}).join('')}`;
+}
+
+/* ════════════════════════════════════════
+   MESSAGES
+════════════════════════════════════════ */
+function buildMsgs(){
+  const convos=[
+    {n:'Chiamaka Obi',uni:'UNILAG',prev:'Yes! The library thing was so relatable 😭',t:'2m',unread:2,ini:'CO',c:'#008751'},
+    {n:'Tobi Adeyemi',uni:'OAU',prev:'OAU things bro, you won\'t understand 😂',t:'15m',unread:0,ini:'TA',c:'#8B0000'},
+    {n:'CampusVibe Events',uni:'ALL',prev:'🔔 Miss Campus 2025 nominations are open!',t:'1h',unread:1,ini:'CV',c:'#B026FF'},
+  ];
+  document.getElementById('msgWrap').innerHTML=`
+    <div style="position:relative;margin-bottom:13px;"><span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);">🔍</span><input class="inp" style="padding-left:34px;" placeholder="Search messages..."/></div>
+    ${convos.map(c=>`<div style="display:flex;gap:11px;padding:13px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:9px;cursor:pointer;transition:border-color .2s;"
+      onclick="showT('Opening conversation...')"
+      onmouseover="this.style.borderColor='var(--border2)'" onmouseout="this.style.borderColor='var(--border)'">
+      <div style="width:44px;height:44px;border-radius:50%;background:${c.c}22;border:2px solid ${c.c}88;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:${c.c};flex-shrink:0;font-family:var(--fhead);">${c.ini}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-weight:700;font-size:14px;">${c.n}</span><span style="font-size:11px;color:var(--muted);font-family:var(--fmono);">${c.t}</span></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.prev}</div>
+      </div>
+      ${c.unread?`<div style="width:18px;height:18px;border-radius:50%;background:var(--neon3);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">${c.unread}</div>`:''}
+    </div>`).join('')}`;
+}
+
+/* ════════════════════════════════════════
+   ALUMNI
+════════════════════════════════════════ */
+function buildAlumni(){
+  const al=[
+    {n:'Dr. Amina Al-Rashid',role:'Medical Doctor · NHS UK',uni:'UNILAG',yr:'Class of 2015',ini:'AA',c:'#008751',ok:true},
+    {n:'Emeka Eze',role:'Software Engineer · Google',uni:'UI',yr:'Class of 2018',ini:'EE',c:'#6B21A8',ok:true},
+    {n:'Fatima Usman',role:'Investment Banker · Stanbic IBTC',uni:'ABU',yr:'Class of 2016',ini:'FU',c:'#1D4ED8',ok:false},
+  ];
+  document.getElementById('alumniWrap').innerHTML=`
+    <div style="background:rgba(255,45,175,.07);border:1px solid rgba(255,45,175,.2);border-radius:var(--r);padding:13px;margin-bottom:14px;">
+      <div style="font-weight:700;font-size:13px;color:var(--neon3);margin-bottom:4px;">⚠️ Alumni Access Policy</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.65;">Alumni access is a privilege governed by the student body. Students vote on access. Access can be revoked at any time.</div>
+    </div>
+    ${al.map(a=>`<div style="background:var(--card);border:1px solid ${a.ok?'var(--border)':'rgba(255,184,0,.3)'};border-radius:var(--rl);padding:15px;margin-bottom:11px;display:flex;align-items:center;gap:13px;">
+      <div style="width:50px;height:50px;border-radius:50%;background:${a.c}22;border:2px solid ${a.c}88;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:${a.c};font-family:var(--fhead);flex-shrink:0;">${a.ini}</div>
+      <div style="flex:1;">
+        <div style="font-weight:700;font-size:14px;font-family:var(--fhead);">${a.n}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${a.role}</div>
+        <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;">
+          <span class="ubadge" style="background:${a.c}22;color:${a.c};border:1px solid ${a.c}44;">${a.uni}</span>
+          <span style="background:var(--card2);color:var(--muted);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-size:10px;font-family:var(--fmono);">${a.yr}</span>
+          ${a.ok?`<span style="background:rgba(0,200,83,.1);color:var(--green);border:1px solid rgba(0,200,83,.22);border-radius:5px;padding:2px 7px;font-size:10px;font-family:var(--fmono);">✅ Approved</span>`:`<span style="background:rgba(255,184,0,.1);color:var(--gold);border:1px solid rgba(255,184,0,.22);border-radius:5px;padding:2px 7px;font-size:10px;font-family:var(--fmono);">⏳ Pending Vote</span>`}
+        </div>
+      </div>
+      ${a.ok?`<button class="btn bo bsm" onclick="showT('Mentorship booking soon!')">Mentor</button>`:`<button class="btn bg bsm" onclick="showT('Casting vote...')">Vote</button>`}
+    </div>`).join('')}`;
+}
+
+/* ════════════════════════════════════════
+   SEARCH
+════════════════════════════════════════ */
+function doSearch(v){
+  const drop=document.getElementById('sDrop');
+  if(!v.trim()){drop.classList.remove('on');return;}
+  const res=SDATA.filter(s=>s.n.toLowerCase().includes(v.toLowerCase())||s.s.toLowerCase().includes(v.toLowerCase()));
+  if(!res.length){drop.classList.remove('on');return;}
+  drop.innerHTML=res.slice(0,6).map(r=>`<div class="t-sitem" onclick="showT('Opening: ${r.n}')">
+    <span class="t-stype" style="background:${r.tb};color:${r.tc};">${r.tp}</span>
+    <div><div class="t-sname">${r.n}</div><div class="t-ssub">${r.s}</div></div>
+  </div>`).join('');
+  drop.classList.add('on');
+}
+let sh;
+function openSDrop(){clearTimeout(sh);if(document.getElementById('sInput').value)document.getElementById('sDrop').classList.add('on');}
+function closeSDrop(){sh=setTimeout(()=>document.getElementById('sDrop').classList.remove('on'),180);}
+
+/* ════════════════════════════════════════
+   NOTIFICATIONS
+════════════════════════════════════════ */
+function openNotif(){
+  document.getElementById('notifBody').innerHTML=NOTIFS.map(n=>`<div style="display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer;" onclick="showT('Viewing...')">
+    <div style="width:34px;height:34px;border-radius:50%;background:${n.c}22;border:1px solid ${n.c}44;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">${n.ic}</div>
+    <div style="flex:1;"><div style="font-size:13px;color:var(--text2);line-height:1.5;">${n.tx}</div><div style="font-size:10px;color:var(--muted);font-family:var(--fmono);margin-top:3px;">${n.t}</div></div>
+  </div>`).join('');
+  openM('notifM');
+}
+
+/* ════════════════════════════════════════
+   AUTH
+════════════════════════════════════════ */
+const AP={1:20,2:40,3:60,4:80,5:95,login:10};
+function aStep(s){
+  document.querySelectorAll('.astep').forEach(el=>el.classList.remove('on'));
+  const id=s==='login'?'asLogin':'as'+s;
+  const el=document.getElementById(id);
+  if(el){el.classList.add('on');}
+  document.getElementById('apfill').style.width=(AP[s]||20)+'%';
+}
+function authDone(){
+  document.getElementById('auth').classList.remove('on');
+  document.body.style.overflow='';
+  showT('🎉 Welcome to CampusVibe, Buhari!','ok');
+}
+function setRole(r){
+  document.getElementById('rStu').classList.toggle('on',r==='student');
+  document.getElementById('rAlu').classList.toggle('on',r==='alumni');
+  document.getElementById('roleBox').innerHTML=r==='student'
+    ?`<div style="font-weight:700;font-size:13px;color:var(--neon2);margin-bottom:5px;">✅ Full Access — Student</div><div style="font-size:12px;color:var(--muted);line-height:1.8;">• Post, comment, react and connect<br>• Join your university community<br>• Participate in events, pageants, debates<br>• Vote on all campus matters</div>`
+    :`<div style="font-weight:700;font-size:13px;color:var(--neon3);margin-bottom:5px;">🔶 Limited Access — Alumni</div><div style="font-size:12px;color:var(--muted);line-height:1.8;">• Mentorship board by default<br>• View-only student feed access<br>• Full access <strong style="color:var(--neon3);">voted on</strong> by students<br>• Can be collectively banned</div>`;
+  document.getElementById('roleBox').style.background=r==='student'?'rgba(0,255,209,.06)':'rgba(255,45,175,.06)';
+  document.getElementById('roleBox').style.borderColor=r==='student'?'rgba(0,255,209,.2)':'rgba(255,45,175,.2)';
+}
+function chkHandle(el){
+  const v=el.value.replace(/[^a-zA-Z0-9_]/g,'');el.value=v;
+  const ok=v.length>=3;
+  document.getElementById('hHint').textContent=ok?`✅ @${v} looks great!`:'Letters, numbers and underscores only.';
+  document.getElementById('hHint').style.color=ok?'var(--neon2)':'var(--muted)';
+}
+function chkPw(el){
+  const v=el.value;let s=0;
+  if(v.length>=8)s++;if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;if(/[^a-zA-Z0-9]/.test(v))s++;
+  const cls={1:'#FF2DAF',2:'#FF8C00',3:'#FFD700',4:'var(--neon2)'};
+  const lbs=['Enter a password','Too weak 😅','Fair — add numbers','Good 💪','Strong! 🔥'];
+  ['pb1','pb2','pb3','pb4'].forEach((b,i)=>{const el2=document.getElementById(b);el2.style.background=i<s?(cls[s]||'var(--border)'):'var(--border)';});
+  document.getElementById('pwlbl').textContent=v.length?lbs[s]:lbs[0];
+  document.getElementById('pwlbl').style.color=v.length?(['var(--muted)','var(--neon3)','#FF8C00','#FFD700','var(--neon2)'][s]||'var(--muted)'):'var(--muted)';
+}
+const uList=Object.entries(UNIS).map(([a,u])=>({a,u}));
+function filterU(q){
+  const fl=uList.filter(({a,u})=>!q||a.toLowerCase().includes(q.toLowerCase())||u.f.toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('uGrid').innerHTML=fl.map(({a,u})=>`<div class="uchip${a===selUni?' on':''}" onclick="selU('${a}')">${a}</div>`).join('');
+}
+function selU(a){
+  selUni=a;filterU(document.getElementById('uSearch')?.value||'');
+  document.getElementById('uSel').textContent='✅ '+UNIS[a].f;
+  document.getElementById('uSel').style.color='var(--neon2)';
+}
+filterU('');
+function loadD(){
+  const f=document.getElementById('facSel').value;
+  const d=document.getElementById('deptSel');
+  d.innerHTML='<option value="">Select dept</option>';
+  if(DMAP[f])DMAP[f].forEach(dep=>{const o=document.createElement('option');o.textContent=dep;d.appendChild(o);});
+}
+const vTitles=['Upload Student ID Card','Upload Portal Screenshot','School Email Verification','Upload Admission Letter'];
+function setV(n){
+  [1,2,3,4].forEach(i=>document.getElementById('v'+i)?.classList.toggle('on',i===n));
+  document.getElementById('upTitle').textContent=vTitles[n-1];
+}
+function fileChosen(input){
+  if(input.files[0]){
+    document.getElementById('upIcon').textContent='✅';
+    document.getElementById('upTitle').textContent=input.files[0].name;
+    document.getElementById('upzone').classList.add('on');
+  }
+}
+function oNext(el,nid){el.classList.toggle('ok',el.value.length>0);if(el.value&&nid)document.getElementById(nid)?.focus();}
+function oBk(e,el,pid){if(e.key==='Backspace'&&!el.value&&pid)document.getElementById(pid)?.focus();}
+
+/* ════════════════════════════════════════
+   BOOT
+════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded',startLoader);
+</script>
+</body>
+</html>
