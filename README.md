@@ -1,0 +1,2 @@
+# CampusVibe
+Nigerian Students Platform
